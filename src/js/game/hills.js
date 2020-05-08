@@ -57,7 +57,7 @@ class Hills {
         width,
         HILLS_THICKNESS,
         {
-          label: 'hill',
+          label: HILLS_LABEL,
           angle,
           isStatic: true,
           friction: 3,

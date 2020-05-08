@@ -43,7 +43,30 @@ class Game {
       offset: CANVAS_HEIGHT * STAR_OFFSET_FACTOR
     })
 
+    this.initEvents()
     this.startGame()
+  }
+
+  initEvents = () => {
+    Events.on(this.engine, 'collisionStart', (e) => {
+      const { pairs } = e
+
+      for (let i = 0; i < pairs.length; i++) {
+        let { bodyA, bodyB } = pairs[i]
+        const isARocket = Helper.isRocket(bodyA)
+        const isBRocket = Helper.isRocket(bodyB)
+
+        if (!isARocket && !isBRocket) continue
+
+        if (isBRocket) {
+          const temp = bodyA
+          bodyA = bodyB
+          bodyB = temp
+        }
+
+        bodyA.parent.gameObject.interact(bodyA, bodyB)
+      }
+    })
   }
 
   startGame = () => {

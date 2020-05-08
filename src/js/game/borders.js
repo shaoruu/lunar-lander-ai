@@ -7,7 +7,7 @@ class Borders {
 
   initBodies = () => {
     const commonOptions = {
-      label: 'border',
+      label: BORDERS_LABEL,
       isStatic: true,
       slop: 0,
       render: {
