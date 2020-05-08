@@ -99,4 +99,30 @@ class Helper {
   static dist(pos1, pos2) {
     return Math.sqrt((pos1.x - pos2.x) ** 2 + (pos1.y - pos2.y) ** 2)
   }
+
+  static getVector(start, end) {
+    return {
+      x: end.x - start.x,
+      y: end.y - start.y
+    }
+  }
+
+  static raycast(bodies, start, r, dist) {
+    const normRay = Matter.Vector.normalise(r)
+    let ray = normRay
+
+    for (var i = 0; i < dist; i++) {
+      ray = Matter.Vector.mult(normRay, i)
+      ray = Matter.Vector.add(start, ray)
+      const bod = Matter.Query.point(bodies, ray)[0]
+      if (bod) {
+        return { point: ray, body: bod }
+      }
+    }
+    return {}
+  }
+
+  static getZoomRatio(render) {
+    return CANVAS_WIDTH / (render.bounds.max.x - render.bounds.min.x)
+  }
 }

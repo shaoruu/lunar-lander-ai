@@ -28,17 +28,17 @@ class Rocket {
         left: {
           startPoint: null,
           endPoint: null,
-          count: null
+          point: null
         },
         right: {
           startPoint: null,
           endPoint: null,
-          count: null
+          point: null
         },
         bottom: {
           startPoint: null,
           endPoint: null,
-          count: null
+          point: null
         }
       }
     }
@@ -212,22 +212,26 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
   }
 
   drawCollisionRays = () => {
-    if (this.supports) {
-      this.supports.forEach((support) => {
-        console.log(support)
-        Helper.drawPoint(this.game.render, support, 5, 'yellow')
+    if (this.depths) {
+      this.depths.forEach((depth) => {
+        Helper.drawPoint(
+          this.game.render,
+          Helper.mapRelativeToFocused(depth, this.game.render),
+          3 * Helper.getZoomRatio(this.game.render),
+          'yellow'
+        )
       })
     }
 
     ;['bottom', 'left', 'right'].forEach((side) => {
-      const { startPoint, endPoint, count } = this.status.collisions[side]
+      const { startPoint, endPoint, point } = this.status.collisions[side]
       if (startPoint) {
         Helper.drawLine(
           this.game.render,
           Helper.mapRelativeToFocused(startPoint, this.game.render),
           Helper.mapRelativeToFocused(endPoint, this.game.render),
-          count > 0 ? '#fff' : '#666',
-          RAY_WIDTH
+          !!point ? '#fff' : '#666',
+          RAY_WIDTH * Helper.getZoomRatio(this.game.render)
         )
       }
     })
@@ -268,7 +272,7 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
     const { rocket } = this.bodies
     const startPoint = rocket.position
 
-    this.supports = []
+    this.depths = []
 
     // cast a ray in three directions to see if any hills intersect
     ;[
@@ -281,14 +285,21 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
         rocket.angle + angle,
         RAY_LENGTH
       )
-      const collisions = Query.ray(this.game.hills.bodies, startPoint, endPoint)
+      const ray = Helper.getVector(startPoint, endPoint)
+      const { point } = Helper.raycast(
+        this.game.hills.bodies,
+        startPoint,
+        ray,
+        RAY_LENGTH
+      )
 
-      if (collisions.supports)
-        this.supports = this.supports.concat(collisions.supports)
+      if (point) {
+        this.depths.push(point)
+      }
 
-      this.status.collisions[side].count = collisions.length
       this.status.collisions[side].startPoint = startPoint
       this.status.collisions[side].endPoint = endPoint
+      this.status.collisions[side].point = point
     })
   }
 

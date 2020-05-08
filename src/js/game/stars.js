@@ -22,14 +22,12 @@ class Stars {
   drawStar = (star) => {
     const [pos, opacity] = star
 
-    const radiusRatio =
-      CANVAS_WIDTH / (this.render.bounds.max.x - this.render.bounds.min.x)
     const color = `rgba(238,238,238,${opacity})`
 
     Helper.drawPoint(
       this.render,
       Helper.mapRelativeToFocused(pos, this.render),
-      STAR_RADIUS * radiusRatio,
+      STAR_RADIUS * Helper.getZoomRatio(this.render),
       color
     )
   }

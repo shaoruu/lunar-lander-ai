@@ -9,9 +9,9 @@ class Game {
       options: {
         width: CANVAS_WIDTH,
         height: CANVAS_HEIGHT,
-        wireframes: false,
-        background: 'transparent',
-        showCollisions: true
+        wireframes: true,
+        background: 'transparent'
+        // showCollisions: true
       }
     })
 
