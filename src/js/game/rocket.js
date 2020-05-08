@@ -24,6 +24,7 @@ class Rocket {
       lastSpeed: 0,
       bornTime: performance.now(),
       lifetime: 0,
+      hasThrusted: false,
       collisions: {
         left: {
           startPoint: null,
@@ -106,6 +107,15 @@ speed: ${rocket.speed.toFixed(TO_FIXED)}
 fuel: ${this.status.fuel.toFixed(TO_FIXED)}
 `
     }
+
+    if (this.status.hasThrusted) {
+      this.force = Helper.clamp(
+        this.force - 1.2 ** ROCKET_FORCE_INC,
+        0,
+        MAX_ROCKET_FORCE
+      )
+      this.status.hasThrusted = false
+    }
   }
 
   // focus on rocket on click
@@ -146,7 +156,24 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
     }
   }
 
-  thrust = () => {}
+  thrust = () => {
+    const { rocket } = this.bodies
+    const { angle, position } = rocket
+
+    const upwardsForce = rocket.mass * THRUST_MASS_FACTOR
+
+    Body.applyForce(rocket, position, {
+      x: upwardsForce * Math.cos(angle - Math.PI / 2),
+      y: upwardsForce * Math.sin(angle - Math.PI / 2)
+    })
+
+    this.force = Helper.clamp(
+      this.force + ROCKET_FORCE_INC,
+      0,
+      MAX_ROCKET_FORCE
+    )
+    this.fuel = Helper.clamp(this.fuel - ROCKET_FUEL_DECR, 0, MAX_ROCKET_FUEL)
+  }
 
   rotateLeft = () => {
     const { rocket } = this.bodies
