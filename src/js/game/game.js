@@ -29,6 +29,7 @@ class Game {
     this.render.mouse = this.mouse
 
     this.borders = new Borders(this.engine)
+
     this.hills = new Hills({
       engine: this.engine,
       amplitude: CANVAS_HEIGHT * HILLS_AMPLITUDE_FACTOR,
@@ -36,10 +37,20 @@ class Game {
       offset: CANVAS_HEIGHT * HILLS_OFFSET_FACTOR
     })
 
+    this.stars = new Stars({
+      render: this.render,
+      count: 50,
+      offset: CANVAS_HEIGHT * STAR_OFFSET_FACTOR
+    })
+
     this.startGame()
   }
 
   startGame = () => {
+    Events.on(this.render, 'afterRender', () => {
+      this.stars.draw()
+    })
+
     Engine.run(this.engine)
     Render.run(this.render)
   }
