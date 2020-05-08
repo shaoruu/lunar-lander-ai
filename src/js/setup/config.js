@@ -1,8 +1,8 @@
 /* -------------------------------------------------------------------------- */
 /*                                   CANVAS                                   */
 /* -------------------------------------------------------------------------- */
-const CANVAS_WIDTH = wrapperDOM.offsetWidth
-const CANVAS_HEIGHT = wrapperDOM.offsetHeight
+const CANVAS_WIDTH = wrapperDOM.clientWidth
+const CANVAS_HEIGHT = wrapperDOM.clientHeight
 
 /* -------------------------------------------------------------------------- */
 /*                                 ENVIRONMENT                                */

@@ -17,7 +17,7 @@ class Borders {
 
     const top = Bodies.rectangle(
       CANVAS_WIDTH / 2,
-      0,
+      -BORDER_THICKNESS / 2,
       CANVAS_WIDTH - BORDER_THICKNESS / 2,
       BORDER_THICKNESS,
       commonOptions
@@ -25,14 +25,14 @@ class Borders {
 
     const bottom = Bodies.rectangle(
       CANVAS_WIDTH / 2,
-      CANVAS_HEIGHT,
+      CANVAS_HEIGHT + BORDER_THICKNESS / 2,
       CANVAS_WIDTH - BORDER_THICKNESS / 2,
       BORDER_THICKNESS,
       commonOptions
     )
 
     const left = Bodies.rectangle(
-      0,
+      -BORDER_THICKNESS / 2,
       CANVAS_HEIGHT / 2,
       BORDER_THICKNESS,
       CANVAS_HEIGHT - BORDER_THICKNESS / 2,
@@ -40,7 +40,7 @@ class Borders {
     )
 
     const right = Bodies.rectangle(
-      CANVAS_WIDTH,
+      CANVAS_WIDTH + BORDER_THICKNESS / 2,
       CANVAS_HEIGHT / 2,
       BORDER_THICKNESS,
       CANVAS_HEIGHT - BORDER_THICKNESS / 2,

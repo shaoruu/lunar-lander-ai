@@ -6,9 +6,9 @@
 * {
   margin: 0;
   padding: 0;
+  color: #c8c8c8af;
   box-sizing: border-box;
   font-family: 'Retganon';
-  color: #c8c8c8af;
 }
 
 body {
@@ -24,6 +24,7 @@ body {
   background: black;
   height: 100%;
   width: 100%;
+  border: 5px solid rgba(255, 255, 255, 0.082);
 }
 
 #title {
