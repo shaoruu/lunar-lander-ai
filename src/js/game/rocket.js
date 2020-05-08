@@ -199,6 +199,8 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
 
     World.add(world, bodyParts)
     bodyParts.forEach((bp) => Body.setStatic(bp, false))
+
+    this.bodies.abandoned = bodyParts
   }
 
   /* -------------------------------------------------------------------------- */
@@ -212,8 +214,8 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
   }
 
   drawCollisionRays = () => {
-    if (this.depths) {
-      this.depths.forEach((depth) => {
+    if (this.points) {
+      this.points.forEach((depth) => {
         Helper.drawPoint(
           this.game.render,
           Helper.mapRelativeToFocused(depth, this.game.render),
@@ -272,7 +274,7 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
     const { rocket } = this.bodies
     const startPoint = rocket.position
 
-    this.depths = []
+    this.points = []
 
     // cast a ray in three directions to see if any hills intersect
     ;[
@@ -294,7 +296,7 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
       )
 
       if (point) {
-        this.depths.push(point)
+        this.points.push(point)
       }
 
       this.status.collisions[side].startPoint = startPoint
@@ -318,7 +320,27 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
     this.status.focused = false
   }
 
-  reset = () => {
-    // this.re
+  reset = ({ x, y, filter }) => {
+    const { world } = this.game.engine
+    const { rocket, fire, abandoned } = this.bodies
+
+    // remove body/bodies determining on state
+    switch (this.state) {
+      case REGULAR_STATE:
+        World.remove(world, rocket)
+        World.remove(world, fire)
+        break
+      case CRASHED_STATE:
+        abandoned.forEach((rb) => World.remove(world, rb))
+        break
+    }
+
+    // empty cache
+    this.points.splice(0, this.points.length)
+
+    // reset status
+    this.state = REGULAR_STATE
+    this.initBody(x, y, filter)
+    this.initStatus()
   }
 }
