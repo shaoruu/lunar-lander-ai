@@ -268,6 +268,7 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
   /* -------------------------------------------------------------------------- */
   registerBrain = (brain) => {
     this.brain = brain
+    brain.gameObject = this // back ref
   }
 
   calculateInputs = () => {
@@ -311,6 +312,11 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
     // const decision = Helpers.argMax(outputs)
 
     // this.decisions[decision]()
+  }
+
+  get fitness() {
+    //! TODO
+    return 1
   }
 
   /* -------------------------------------------------------------------------- */

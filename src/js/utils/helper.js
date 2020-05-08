@@ -125,4 +125,8 @@ class Helper {
   static getZoomRatio(render) {
     return CANVAS_WIDTH / (render.bounds.max.x - render.bounds.min.x)
   }
+
+  static randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min)
+  }
 }
