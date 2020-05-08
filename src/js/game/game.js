@@ -10,7 +10,8 @@ class Game {
         width: CANVAS_WIDTH,
         height: CANVAS_HEIGHT,
         wireframes: false,
-        background: 'transparent'
+        background: 'transparent',
+        showCollisions: true
       }
     })
 
@@ -87,7 +88,7 @@ class Game {
     this.rockets.push(
       new Rocket({
         game: this,
-        x: 100,
+        x: 200,
         y: 100,
         filter: Body.nextGroup(true)
       })

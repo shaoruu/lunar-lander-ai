@@ -212,7 +212,13 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
   }
 
   drawCollisionRays = () => {
-    // bottom
+    if (this.supports) {
+      this.supports.forEach((support) => {
+        console.log(support)
+        Helper.drawPoint(this.game.render, support, 5, 'yellow')
+      })
+    }
+
     ;['bottom', 'left', 'right'].forEach((side) => {
       const { startPoint, endPoint, count } = this.status.collisions[side]
       if (startPoint) {
@@ -262,6 +268,8 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
     const { rocket } = this.bodies
     const startPoint = rocket.position
 
+    this.supports = []
+
     // cast a ray in three directions to see if any hills intersect
     ;[
       [Math.PI / 2, 'bottom'],
@@ -274,6 +282,9 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
         RAY_LENGTH
       )
       const collisions = Query.ray(this.game.hills.bodies, startPoint, endPoint)
+
+      if (collisions.supports)
+        this.supports = this.supports.concat(collisions.supports)
 
       this.status.collisions[side].count = collisions.length
       this.status.collisions[side].startPoint = startPoint

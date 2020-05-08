@@ -86,6 +86,16 @@ class Helper {
     context.stroke()
   }
 
+  static drawPoint(render, point, radius, color) {
+    const context = render.context
+    const { x, y } = point
+
+    context.fillStyle = color
+    context.beginPath()
+    context.ellipse(x, y, radius, radius, 0, 0, Math.PI * 2)
+    context.fill()
+  }
+
   static dist(pos1, pos2) {
     return Math.sqrt((pos1.x - pos2.x) ** 2 + (pos1.y - pos2.y) ** 2)
   }

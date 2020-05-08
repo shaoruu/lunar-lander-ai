@@ -41,5 +41,5 @@ const SPEED_EPSILON = 0.03
 const LANDING_ANGLE_TOLERANCE = 30 // degrees
 const SPEED_TOLERANCE = 0.8
 const ROCKET_MASS_RATIO = 0.2
-const RAY_WIDTH = 0.5
+const RAY_WIDTH = 0.8
 const RAY_LENGTH = 100
