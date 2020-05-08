@@ -37,6 +37,7 @@ class Stars {
       pos.x += STARS_SPEED
       if (pos.x > CANVAS_WIDTH + STAR_RADIUS / 2) {
         pos.x = -STAR_RADIUS / 2
+        pos.y = Math.random() * (CANVAS_HEIGHT - this.offset)
       }
     })
     this.stars.forEach(this.drawStar)
