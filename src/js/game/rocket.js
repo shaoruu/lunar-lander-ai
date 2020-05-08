@@ -21,7 +21,9 @@ class Rocket {
       force: 0,
       fuel: MAX_ROCKET_FUEL,
       focused: false,
-      lastSpeed: 0
+      lastSpeed: 0,
+      bornTime: performance.now(),
+      lifetime: 0
     }
   }
 
@@ -29,12 +31,14 @@ class Rocket {
   /*                                   UPDATES                                  */
   /* -------------------------------------------------------------------------- */
   update = () => {
+    if (this.state !== REGULAR_STATE) return
+
     this.checkStatus()
     this.useBrain()
     this.updateVisuals()
     this.updateStats()
     this.updateViewport()
-    this.cache()
+    this.updateStatus()
   }
 
   checkStatus = () => {
@@ -100,8 +104,9 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
     }
   }
 
-  cache = () => {
+  updateStatus = () => {
     this.status.lastSpeed = this.bodies.rocket.speed
+    this.status.lifetime = performance.now() - this.status.bornTime
   }
 
   /* -------------------------------------------------------------------------- */
