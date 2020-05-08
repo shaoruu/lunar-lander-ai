@@ -21,12 +21,23 @@ class Stars {
 
   drawStar = (star) => {
     const [pos, color] = star
-    const { x, y } = pos
+    const { x, y } = Helper.mapRelativeToFocused(pos, this.render)
+
+    const radiusRatio =
+      CANVAS_WIDTH / (this.render.bounds.max.x - this.render.bounds.min.x)
 
     const context = this.render.context
     context.fillStyle = `rgba(238,238,238,${color})`
     context.beginPath()
-    context.ellipse(x, y, STAR_RADIUS, STAR_RADIUS, 0, 0, Math.PI * 2)
+    context.ellipse(
+      x,
+      y,
+      STAR_RADIUS * radiusRatio,
+      STAR_RADIUS * radiusRatio,
+      0,
+      0,
+      Math.PI * 2
+    )
     context.fill()
   }
 

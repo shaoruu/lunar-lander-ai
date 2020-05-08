@@ -6,17 +6,17 @@ class Rocket {
     this.decisions = [this.thrust, this.rotateLeft, this.rotateRight, () => {}]
 
     this.initBody(x, y, filter)
-    this.initStatus()
+    this.reset()
   }
 
   initBody = (x, y, filter) => {
     this.bodies = getRocketBody(x, y, ROCKET_DIM, ROCKET_DIM, filter)
     this.bodies.rocket.gameObject = this // back reference
 
-    World.add(engine.world, [this.bodies.fire, this.bodies.rocket])
+    World.add(this.game.engine.world, [this.bodies.fire, this.bodies.rocket])
   }
 
-  initStatus = () => {
+  reset = () => {
     this.status = {
       force: 0,
       fuel: MAX_ROCKET_FUEL,
@@ -80,27 +80,29 @@ class Rocket {
     if (this.status.focused) {
       const { rocket } = this.bodies
 
-      this.textToRender = ```
+      this.textToRender = `
 thrust: ${this.status.force.toFixed(TO_FIXED)}
 angle: ${Helper.toDegrees(Helper.normalizeAngle(rocket.angle))}
 speed: ${rocket.speed}
 fuel: ${this.status.fuel.toFixed(TO_FIXED)}
-      ```
+`
     }
   }
 
   // focus on rocket on click
   updateViewport = () => {
-    const { body } = mouseConstraint
-    if (body && body.label === 'rocket' && body === this.rigidBody) {
-      Render.lookAt(
-        this.game.render,
-        { position: this.bodies.rocket.position },
-        { x: FOCUS_PADDING, y: FOCUS_PADDING }
-      )
-
+    const { body } = this.game.mouseConstraint
+    if (body && body.label === 'rocket' && body === this.bodies.rocket) {
       this.status.focused = true
       this.game.focusOnRocket(this)
+    }
+
+    if (this.status.focused) {
+      console.log(this.bodies.rocket.position)
+      Render.lookAt(this.game.render, this.bodies.rocket, {
+        x: FOCUS_PADDING,
+        y: FOCUS_PADDING
+      })
     }
   }
 
@@ -114,7 +116,7 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
   /* -------------------------------------------------------------------------- */
   interact = (part, obstacle) => {
     const angleDiff = Helper.toDegrees(
-      Helpers.normalizeAngle(Math.abs(part.angle - obstacle.angle))
+      Helper.normalizeAngle(Math.abs(part.angle - obstacle.angle))
     )
 
     if (
@@ -188,14 +190,22 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
     this.brain = brain
   }
 
-  calculateInputs = () => {}
+  calculateInputs = () => {
+    const { rocket } = this.bodies
+    const startPoint = rocket.position
+    const endPoint = Helper.getEndPoint(startPoint, rocket.angle, CANVAS_WIDTH)
+
+    const collisions = Query.ray(this.game.hills.bodies, startPoint, endPoint)
+
+    Helper.drawLine(this.game.render, startPoint, endPoint, '#fff', 5)
+  }
 
   useBrain = () => {
     const inputs = this.calculateInputs()
-    const outputs = this.brain.activate(inputs)
-    const decision = Helpers.argMax(outputs)
+    // const outputs = this.brain.activate(inputs)
+    // const decision = Helpers.argMax(outputs)
 
-    this.decisions[decision]()
+    // this.decisions[decision]()
   }
 
   /* -------------------------------------------------------------------------- */

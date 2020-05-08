@@ -131,7 +131,7 @@ const getRocketBody = (x, y, w, h, filter) => {
       sleepThreshold: 100,
       ...commonOptions,
       // mass: (w * h) / 10,
-      mass: (w * h) / ROCKET_MASS_RATIO,
+      mass: w * h * ROCKET_MASS_RATIO,
       collisionFilter: { group: filter }
     }),
     fire

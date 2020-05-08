@@ -66,6 +66,26 @@ class Helper {
     })
   }
 
+  static getEndPoint(start, angle, distance) {
+    const { x, y } = start
+
+    const newX = x + Math.cos(angle) * distance
+    const newY = y + Math.sin(angle) * distance
+
+    return { x: newX, y: newY }
+  }
+
+  static drawLine(render, startPoint, endPoint, color, lineWidth = 0.5) {
+    const context = render.context
+
+    context.beginPath()
+    context.moveTo(startPoint.x, startPoint.y)
+    context.lineTo(endPoint.x, endPoint.y)
+    context.strokeStyle = color
+    context.lineWidth = lineWidth
+    context.stroke()
+  }
+
   static dist(pos1, pos2) {
     return Math.sqrt((pos1.x - pos2.x) ** 2 + (pos1.y - pos2.y) ** 2)
   }

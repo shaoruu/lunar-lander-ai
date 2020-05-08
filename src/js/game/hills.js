@@ -39,7 +39,7 @@ class Hills {
   }
 
   initBodies = () => {
-    this.rigidBodies = []
+    this.bodies = []
 
     for (let i = 0; i < this.heights.length - 1; i++) {
       const { x: cx, y: cy } = Helper.adjustCoords(this.heights[i])
@@ -68,9 +68,9 @@ class Hills {
         }
       )
 
-      this.rigidBodies.push(newBody)
+      this.bodies.push(newBody)
     }
 
-    World.add(this.engine.world, this.rigidBodies)
+    World.add(this.engine.world, this.bodies)
   }
 }

@@ -39,11 +39,12 @@ class Game {
 
     this.stars = new Stars({
       render: this.render,
-      count: 50,
+      count: 20,
       offset: CANVAS_HEIGHT * STAR_OFFSET_FACTOR
     })
 
     this.initEvents()
+    this.initRockets()
     this.startGame()
   }
 
@@ -81,9 +82,25 @@ class Game {
     })
   }
 
+  initRockets = () => {
+    this.rockets = []
+    this.rockets.push(
+      new Rocket({
+        game: this,
+        x: 100,
+        y: 100,
+        filter: Body.nextGroup(true)
+      })
+    )
+  }
+
   startGame = () => {
     Events.on(this.render, 'afterRender', () => {
       this.stars.draw()
+    })
+
+    Events.on(this.engine, 'afterUpdate', () => {
+      this.rockets.forEach((r) => r.update())
     })
 
     Engine.run(this.engine)
