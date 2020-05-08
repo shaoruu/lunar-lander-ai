@@ -53,7 +53,7 @@ class Helper {
     }
   }
 
-  static renderText(text, position, fontSize = 17) {
+  static renderText(render, text, position, fontSize = 17) {
     const { x, y } = position
 
     const lines = text.split('\n')

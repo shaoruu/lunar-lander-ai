@@ -19,7 +19,7 @@ const HILLS_INTERVAL = 100
 const HILLS_OFFSET_FACTOR = 0.3
 const STAR_RADIUS = 2
 const STAR_OFFSET_FACTOR = 0.5
-const STARS_SPEED = 0.1
+const STARS_SPEED = 0.15
 
 /* -------------------------------------------------------------------------- */
 /*                                   ROCKET                                   */
@@ -41,3 +41,5 @@ const SPEED_EPSILON = 0.03
 const LANDING_ANGLE_TOLERANCE = 30 // degrees
 const SPEED_TOLERANCE = 0.8
 const ROCKET_MASS_RATIO = 0.2
+const RAY_WIDTH = 0.5
+const RAY_LENGTH = 100

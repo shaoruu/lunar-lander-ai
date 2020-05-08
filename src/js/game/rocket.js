@@ -6,7 +6,7 @@ class Rocket {
     this.decisions = [this.thrust, this.rotateLeft, this.rotateRight, () => {}]
 
     this.initBody(x, y, filter)
-    this.reset()
+    this.initStatus()
   }
 
   initBody = (x, y, filter) => {
@@ -16,14 +16,31 @@ class Rocket {
     World.add(this.game.engine.world, [this.bodies.fire, this.bodies.rocket])
   }
 
-  reset = () => {
+  initStatus = () => {
     this.status = {
       force: 0,
       fuel: MAX_ROCKET_FUEL,
       focused: false,
       lastSpeed: 0,
       bornTime: performance.now(),
-      lifetime: 0
+      lifetime: 0,
+      collisions: {
+        left: {
+          startPoint: null,
+          endPoint: null,
+          count: null
+        },
+        right: {
+          startPoint: null,
+          endPoint: null,
+          count: null
+        },
+        bottom: {
+          startPoint: null,
+          endPoint: null,
+          count: null
+        }
+      }
     }
   }
 
@@ -82,8 +99,10 @@ class Rocket {
 
       this.textToRender = `
 thrust: ${this.status.force.toFixed(TO_FIXED)}
-angle: ${Helper.toDegrees(Helper.normalizeAngle(rocket.angle))}
-speed: ${rocket.speed}
+angle: ${Helper.toDegrees(Helper.normalizeAngle(rocket.angle)).toFixed(
+        TO_FIXED
+      )}°
+speed: ${rocket.speed.toFixed(TO_FIXED)}
 fuel: ${this.status.fuel.toFixed(TO_FIXED)}
 `
     }
@@ -98,7 +117,6 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
     }
 
     if (this.status.focused) {
-      console.log(this.bodies.rocket.position)
       Render.lookAt(this.game.render, this.bodies.rocket, {
         x: FOCUS_PADDING,
         y: FOCUS_PADDING
@@ -184,6 +202,56 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
   }
 
   /* -------------------------------------------------------------------------- */
+  /*                                    DRAW                                    */
+  /* -------------------------------------------------------------------------- */
+  draw = () => {
+    if (this.state !== REGULAR_STATE) return
+
+    this.drawCollisionRays()
+    this.drawStats()
+  }
+
+  drawCollisionRays = () => {
+    // bottom
+    ;['bottom', 'left', 'right'].forEach((side) => {
+      const { startPoint, endPoint, count } = this.status.collisions[side]
+      if (startPoint) {
+        Helper.drawLine(
+          this.game.render,
+          Helper.mapRelativeToFocused(startPoint, this.game.render),
+          Helper.mapRelativeToFocused(endPoint, this.game.render),
+          count > 0 ? '#fff' : '#666',
+          RAY_WIDTH
+        )
+      }
+    })
+  }
+
+  drawStats = () => {
+    // render stats next to the rocket if it's focused
+    if (this.status.focused && this.textToRender) {
+      const { rocket } = this.bodies
+      const { x, y } = Helper.mapRelativeToFocused(
+        rocket.position,
+        this.game.render
+      )
+
+      const xOffset = ROCKET_DIM * 2
+      const yOffset = -ROCKET_DIM * 1.4
+
+      Helper.renderText(
+        this.game.render,
+        this.textToRender,
+        {
+          x: x + xOffset,
+          y: y + yOffset
+        },
+        20
+      )
+    }
+  }
+
+  /* -------------------------------------------------------------------------- */
   /*                              GENETIC ALGORITHM                             */
   /* -------------------------------------------------------------------------- */
   registerBrain = (brain) => {
@@ -193,11 +261,24 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
   calculateInputs = () => {
     const { rocket } = this.bodies
     const startPoint = rocket.position
-    const endPoint = Helper.getEndPoint(startPoint, rocket.angle, CANVAS_WIDTH)
 
-    const collisions = Query.ray(this.game.hills.bodies, startPoint, endPoint)
+    // cast a ray in three directions to see if any hills intersect
+    ;[
+      [Math.PI / 2, 'bottom'],
+      [0, 'right'],
+      [Math.PI, 'left']
+    ].forEach(([angle, side]) => {
+      const endPoint = Helper.getEndPoint(
+        startPoint,
+        rocket.angle + angle,
+        RAY_LENGTH
+      )
+      const collisions = Query.ray(this.game.hills.bodies, startPoint, endPoint)
 
-    Helper.drawLine(this.game.render, startPoint, endPoint, '#fff', 5)
+      this.status.collisions[side].count = collisions.length
+      this.status.collisions[side].startPoint = startPoint
+      this.status.collisions[side].endPoint = endPoint
+    })
   }
 
   useBrain = () => {
@@ -211,27 +292,11 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
   /* -------------------------------------------------------------------------- */
   /*                                   OTHERS                                   */
   /* -------------------------------------------------------------------------- */
-  draw = () => {
-    const { rocket } = this.bodies
-
-    if (this.status.focused) {
-      const { x, y } = mapRelativeToFocused(rocket.position, this.game.render)
-
-      const xOffset = ROCKET_DIM * 2
-      const yOFfset = ROCKET_DIM / 2
-
-      Helper.renderText(
-        this.textToRender,
-        {
-          x: x + xOffset,
-          y: y + yOFfset
-        },
-        20
-      )
-    }
-  }
-
   removeFocus = () => {
     this.status.focused = false
+  }
+
+  reset = () => {
+    // this.re
   }
 }

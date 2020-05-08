@@ -97,6 +97,7 @@ class Game {
   startGame = () => {
     Events.on(this.render, 'afterRender', () => {
       this.stars.draw()
+      this.rockets.forEach((r) => r.draw())
     })
 
     Events.on(this.engine, 'afterUpdate', () => {
