@@ -48,6 +48,18 @@ class Game {
   }
 
   initEvents = () => {
+    document.addEventListener('keydown', (e) => {
+      const { keyCode } = e
+
+      switch (keyCode) {
+        case 27: {
+          this.zoomOut()
+          this.focusedRocket.removeFocus()
+          this.focusedRocket = null
+        }
+      }
+    })
+
     Events.on(this.engine, 'collisionStart', (e) => {
       const { pairs } = e
 
@@ -76,5 +88,17 @@ class Game {
 
     Engine.run(this.engine)
     Render.run(this.render)
+  }
+
+  zoomOut = () => {
+    Render.lookAt(this.render, {
+      min: { x: 0, y: 0 },
+      max: { x: CANVAS_WIDTH, y: CANVAS_HEIGHT }
+    })
+  }
+
+  //! Fix this code
+  focusOnRocket = (rocket) => {
+    this.focusedRocket = rocket
   }
 }
