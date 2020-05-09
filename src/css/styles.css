@@ -30,6 +30,7 @@ body {
   height: 100vh;
   width: 80vw;
   border: 5px solid rgba(255, 255, 255, 0.082);
+  cursor: pointer;
 }
 
 #title {
