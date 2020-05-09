@@ -439,7 +439,7 @@ class Rocket {
       collisionStatus.endPoint = endPoint
     })
 
-    inputs.push(rocket.speed)
+    inputs.push(rocket.speed * SPEED_INPUT_WEIGHT)
     inputs.push(Helper.toDegrees(Helper.normalizeAngle(rocket.angle)))
 
     return inputs
@@ -484,7 +484,7 @@ class Rocket {
       fuelUsed * FUEL_WEIGHT +
       angleDiff * ANGLE_DIFF_WEIGHT +
       this.status.lastSpeed * SPEED_WEIGHT +
-      this.status.lifetime * TIME_WEIGHT +
+      // this.status.lifetime * TIME_WEIGHT +
       Number(this.state === LANDED_STATE) * LANDING_SCORE +
       Number(this.state === CRASHED_STATE) * crashedPenalty
     )

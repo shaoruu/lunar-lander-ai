@@ -47,8 +47,9 @@ const LANDING_ANGLE_TOLERANCE = 30 // degrees
 const SPEED_TOLERANCE = 0.8
 const ROCKET_MASS_RATIO = 0.2
 const RAY_WIDTH = 0.8
-const RAY_LENGTH = 200
+const RAY_LENGTH = 300
 const RAY_SIDE_ANGLE = Math.PI / 2
+// const RAY_SIDE_ANGLE = (Math.PI * 3) / 4
 const STATS_FONT_SIZE = 20
 // const ROCKET_SPAWN_X = CANVAS_WIDTH / 2
 // const ROCKET_SPAWN_Y = CANVAS_HEIGHT / 2 - 100
@@ -64,15 +65,16 @@ const MAX_ROCKET_LIFETIME = 20 * 1000 // 8 seconds
 /* -------------------------------------------------------------------------- */
 /*                              GENETIC ALGORITHM                             */
 /* -------------------------------------------------------------------------- */
-const MAX_UNIT = 40
-const TOP_UNIT = 10
+const MAX_UNIT = 30
+const TOP_UNIT = 5
 const FUEL_WEIGHT = -0.01
 const TIME_WEIGHT = -0.001
-const SPEED_WEIGHT = -6
-const ANGLE_DIFF_WEIGHT = 8
+const SPEED_WEIGHT = -12
+const ANGLE_DIFF_WEIGHT = 12
 const CRASH_HILL_PENALTY = -10
 const CRASH_BORDER_PENALTY = -40
 const LANDING_SCORE = 100
 const MUTATE_RATE = 0.2
-const INPUT_SIZE = 5
+const INPUT_SIZE = 6
 const HIGHLIGHT_SIZE = ROCKET_DIM * 1.5
+const SPEED_INPUT_WEIGHT = 100

@@ -27,8 +27,8 @@ body {
 
 #wrapper {
   position: relative;
-  height: 60vh;
-  width: 80vh;
+  height: 100vh;
+  width: 80vw;
   border: 5px solid rgba(255, 255, 255, 0.082);
 }
 
@@ -43,8 +43,8 @@ body {
 }
 
 #info-and-controls {
-  width: 20vh;
-  height: 60vh;
+  width: 20vw;
+  height: 100vh;
   overflow: auto;
   display: flex;
   flex-direction: column;
