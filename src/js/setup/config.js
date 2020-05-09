@@ -29,7 +29,7 @@ const ROCKET_LABEL = 'rocket'
 const ROCKET_FOOT_LABEL = 'rocket-foot'
 const ROCKET_OTHER_LABEL = 'rocket-other'
 const ABANDONED_LABEL = 'abandoned'
-const ROCKET_DIM = 30
+const ROCKET_DIM = 50
 const MAX_ROCKET_FORCE = 10
 const MAX_ROCKET_FUEL = 500
 const ROCKET_FUEL_DECR = 1.2
@@ -38,29 +38,26 @@ const THRUST_MASS_FACTOR = 1 / 5000
 const REGULAR_STATE = 0
 const CRASHED_STATE = 1
 const LANDED_STATE = 2
-const FOCUS_PADDING = 200
+const FOCUS_PADDING = 300
 const TO_FIXED = 3
 const MAX_ROTATION = Math.PI / 2
-// const MAX_ROTATION = (3 * Math.PI) / 4
 const SPEED_EPSILON = 0.03
 const LANDING_ANGLE_TOLERANCE = 30 // degrees
 const SPEED_TOLERANCE = 0.8
 const ROCKET_MASS_RATIO = 0.2
 const RAY_WIDTH = 0.8
-const RAY_LENGTH = 300
+const RAY_LENGTH = 240
 const RAY_SIDE_ANGLE = Math.PI / 2
-// const RAY_SIDE_ANGLE = (Math.PI * 3) / 4
 const STATS_FONT_SIZE = 20
-// const ROCKET_SPAWN_X = CANVAS_WIDTH / 2
-// const ROCKET_SPAWN_Y = CANVAS_HEIGHT / 2 - 100
 const ROCKET_SPAWN_X = 100
 const ROCKET_SPAWN_Y = 200
 const ROCKET_SPAWN_ROT = Math.PI / 3
-// const ROCKET_SPAWN_ROT = 0
 const ROCKET_SPAWN_VEL_X = 2
 const ROCKET_SPAWN_VEL_Y = 0
 const ANGULAR_SPEED = 1 / 10
 const MAX_ROCKET_LIFETIME = 20 * 1000 // 8 seconds
+// const ROCKET_COLORS = ['#6f0000', '#c70039', '#511845', '#342ead', '#501111']
+const ROCKET_COLORS = ['#C4C4C5']
 
 /* -------------------------------------------------------------------------- */
 /*                              GENETIC ALGORITHM                             */
@@ -73,7 +70,12 @@ const ANGLE_DIFF_WEIGHT = 12
 const CRASH_HILL_PENALTY = -10
 const CRASH_BORDER_PENALTY = -40
 const LANDING_SCORE = 200
-const MUTATE_RATE = 0.2
+const MUTATE_RATE = 0.3
 const INPUT_SIZE = 6
 const HIGHLIGHT_SIZE = ROCKET_DIM * 1.5
 const SPEED_INPUT_WEIGHT = 100
+
+/* -------------------------------------------------------------------------- */
+/*                                   OPTIONS                                  */
+/* -------------------------------------------------------------------------- */
+const SHOULD_WIREFRAMES = false

@@ -1,5 +1,5 @@
 /* ROCKET */
-const getRocketBody = (x, y, w, h, filter) => {
+const getRocketBody = (x, y, w, h, filter, color) => {
   const Y_OFFSET = h * 0
 
   const commonOptions = {
@@ -20,8 +20,8 @@ const getRocketBody = (x, y, w, h, filter) => {
     {
       label: ROCKET_OTHER_LABEL,
       render: {
-        fillStyle: '#84a9ac',
-        opacity: 0.6
+        fillStyle: '#B5D2E1',
+        opacity: 0.7
       },
       // mass: 0.01,
       ...commonOptions
@@ -36,7 +36,7 @@ const getRocketBody = (x, y, w, h, filter) => {
     {
       label: ROCKET_OTHER_LABEL,
       render: {
-        fillStyle: '#501111'
+        fillStyle: '#DDCFB5'
       },
       ...commonOptions
     }
@@ -47,7 +47,7 @@ const getRocketBody = (x, y, w, h, filter) => {
   const stand = Bodies.rectangle(x, y + Y_OFFSET, w * STAND_SCALE, h * 0.15, {
     label: ROCKET_OTHER_LABEL,
     render: {
-      fillStyle: '#811232'
+      fillStyle: '#E18A2E'
     },
     ...commonOptions
   })
@@ -63,7 +63,7 @@ const getRocketBody = (x, y, w, h, filter) => {
     {
       label: ROCKET_OTHER_LABEL,
       render: {
-        fillStyle: '#123987'
+        fillStyle: '#EAC580'
       },
       angle: -Math.PI / 2 + LEG_ANGLE,
       ...commonOptions
@@ -77,7 +77,7 @@ const getRocketBody = (x, y, w, h, filter) => {
     {
       label: ROCKET_OTHER_LABEL,
       render: {
-        fillStyle: '#123987'
+        fillStyle: '#EAC580'
       },
       angle: -Math.PI / 2 - LEG_ANGLE,
       ...commonOptions
@@ -94,7 +94,7 @@ const getRocketBody = (x, y, w, h, filter) => {
     {
       label: ROCKET_FOOT_LABEL,
       render: {
-        fillStyle: '#164629'
+        fillStyle: '#D65747'
       },
       ...commonOptions
     }
@@ -107,7 +107,7 @@ const getRocketBody = (x, y, w, h, filter) => {
     {
       label: ROCKET_FOOT_LABEL,
       render: {
-        fillStyle: '#164629'
+        fillStyle: '#D65747'
       },
       ...commonOptions
     }
@@ -117,7 +117,7 @@ const getRocketBody = (x, y, w, h, filter) => {
   const fire = Bodies.polygon(x, y + Y_OFFSET, 3, w * FIRE_SCALE, {
     label: ROCKET_OTHER_LABEL,
     render: {
-      fillStyle: '#803010'
+      fillStyle: '#F47423'
     },
     collisionFilter: { group: filter },
     angle: -Math.PI / 2,

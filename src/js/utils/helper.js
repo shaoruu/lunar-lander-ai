@@ -161,4 +161,9 @@ class Helper {
       }
     })
   }
+
+  static getRandomRocketColor() {
+    const index = Helper.randomInt(0, ROCKET_COLORS.length - 1)
+    return ROCKET_COLORS[index]
+  }
 }

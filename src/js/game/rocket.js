@@ -4,7 +4,14 @@ class Rocket {
     this.state = REGULAR_STATE
 
     this.decisions = [this.thrust, this.rotateLeft, this.rotateRight, () => {}]
-    this.defaults = [x, y, filter, rotation, velocity]
+    this.defaults = [
+      x,
+      y,
+      filter,
+      rotation,
+      velocity,
+      Helper.getRandomRocketColor()
+    ]
 
     this.initBody(...this.defaults)
     this.initStatus()
@@ -14,8 +21,8 @@ class Rocket {
   /* -------------------------------------------------------------------------- */
   /*                                    INIT                                    */
   /* -------------------------------------------------------------------------- */
-  initBody = (x, y, filter, rot, velocity) => {
-    this.bodies = getRocketBody(x, y, ROCKET_DIM, ROCKET_DIM, filter)
+  initBody = (x, y, filter, rot, velocity, color) => {
+    this.bodies = getRocketBody(x, y, ROCKET_DIM, ROCKET_DIM, filter, color)
 
     const { rocket } = this.bodies
     rocket.gameObject = this // back reference
@@ -391,6 +398,7 @@ class Rocket {
   /* -------------------------------------------------------------------------- */
   registerBrain = (brain) => {
     this.brain = brain
+    brain.setOptimize(false)
     brain.gameObject = this // back ref
   }
 

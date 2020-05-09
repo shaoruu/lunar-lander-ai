@@ -9,9 +9,26 @@ class Game {
       options: {
         width: CANVAS_WIDTH,
         height: CANVAS_HEIGHT,
-        wireframes: true,
-        background: 'transparent'
-        // showCollisions: true
+        pixelRatio: 1,
+        wireframes: SHOULD_WIREFRAMES,
+        hasBounds: false,
+        background: 'transparent',
+        showSleeping: false,
+        showDebug: false,
+        showBroadphase: false,
+        showBounds: false,
+        showVelocity: false,
+        showCollisions: false,
+        showSeparations: false,
+        showAxes: false,
+        showPositions: false,
+        showAngleIndicator: false,
+        showIds: false,
+        showShadows: false,
+        showVertexNumbers: false,
+        showConvexHulls: false,
+        showInternalEdges: false,
+        showMousePosition: false
       }
     })
 
