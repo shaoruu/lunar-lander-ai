@@ -82,10 +82,8 @@ class Game {
           bodyB = temp
         }
 
-        try {
+        if (bodyA.parent.gameObject instanceof Rocket) {
           bodyA.parent.gameObject.interact(bodyA, bodyB)
-        } catch {
-          console.log(bodyA)
         }
       }
     })
