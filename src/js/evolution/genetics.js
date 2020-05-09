@@ -12,7 +12,6 @@ class GeneticAlgorithm {
     this.brains = []
 
     this.reset()
-    this.initRockets()
   }
 
   reset = () => {
@@ -21,6 +20,8 @@ class GeneticAlgorithm {
   }
 
   initRockets = () => {
+    this.filterGroup = Body.nextGroup(true)
+
     // spawn in "maxUnit" amount of rockets
     for (let i = 0; i < this.maxUnits; i++)
       this.rockets.push(
@@ -28,9 +29,17 @@ class GeneticAlgorithm {
           game: this.game,
           x: ROCKET_SPAWN_X,
           y: ROCKET_SPAWN_Y,
-          filter: Body.nextGroup(true)
+          filter: this.filterGroup
         })
       )
+  }
+
+  update = () => {
+    this.rockets.forEach((rocket) => rocket.update())
+  }
+
+  draw = () => {
+    this.rockets.forEach((rocket) => rocket.draw())
   }
 
   createBrains = () => {
@@ -41,7 +50,11 @@ class GeneticAlgorithm {
       const newBrain = new synaptic.Architect.Perceptron(3, 6, 4)
       newBrain.index = i
 
-      rocket.reset()
+      rocket.reset({
+        x: ROCKET_SPAWN_X,
+        y: ROCKET_SPAWN_Y,
+        filter: this.filterGroup
+      })
       rocket.registerBrain(newBrain)
 
       this.brains.push(newBrain)

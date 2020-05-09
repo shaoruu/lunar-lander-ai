@@ -303,6 +303,8 @@ class Rocket {
   }
 
   drawCollisionRays = () => {
+    if (!this.status.focused) return
+
     if (this.points) {
       this.points.forEach((point) => {
         Helper.drawPoint(
@@ -403,6 +405,8 @@ class Rocket {
       collisionStatus.startPoint = startPoint
       collisionStatus.endPoint = endPoint
     })
+
+    return inputs
   }
 
   useBrain = () => {
@@ -410,14 +414,20 @@ class Rocket {
 
     const inputs = this.calculateInputs()
     const outputs = this.brain.activate(inputs)
-    const decision = Helpers.argMax(outputs)
+    const decision = Helper.argMax(outputs)
 
     this.decisions[decision]()
   }
 
   get fitness() {
-    //! TODO
-    return 1
+    const fuelUsed = MAX_ROCKET_FUEL - this.status.fuel
+
+    return (
+      fuelUsed * FUEL_WEIGHT +
+      this.status.lifetime * TIME_WEIGHT +
+      Number(this.state === LANDED_STATE) * LANDING_SCORE +
+      Number(this.state === CRASHED_STATE) * CRASH_SCORE
+    )
   }
 
   /* -------------------------------------------------------------------------- */
@@ -443,7 +453,9 @@ class Rocket {
     }
 
     // empty cache
-    this.points.splice(0, this.points.length)
+    if (this.points) {
+      this.points.splice(0, this.points.length)
+    }
 
     // reset status
     this.state = REGULAR_STATE

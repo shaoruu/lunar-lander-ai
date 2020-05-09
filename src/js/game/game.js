@@ -9,7 +9,7 @@ class Game {
       options: {
         width: CANVAS_WIDTH,
         height: CANVAS_HEIGHT,
-        wireframes: false,
+        wireframes: true,
         background: 'transparent'
         // showCollisions: true
       }
@@ -88,25 +88,23 @@ class Game {
   }
 
   initRockets = () => {
-    this.rockets = []
-    this.rockets.push(
-      new Rocket({
-        game: this,
-        x: 200,
-        y: 100,
-        filter: Body.nextGroup(true)
-      })
-    )
+    this.GA = new GeneticAlgorithm({
+      game: this,
+      maxUnits: MAX_UNIT,
+      topUnits: TOP_UNIT
+    })
+    this.GA.initRockets()
+    this.GA.createBrains()
   }
 
   startGame = () => {
     Events.on(this.render, 'afterRender', () => {
       this.stars.draw()
-      this.rockets.forEach((r) => r.draw())
+      this.GA.draw()
     })
 
     Events.on(this.engine, 'afterUpdate', () => {
-      this.rockets.forEach((r) => r.update())
+      this.GA.update()
     })
 
     Engine.run(this.engine)
