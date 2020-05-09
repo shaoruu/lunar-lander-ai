@@ -201,6 +201,11 @@ class Rocket {
     this.status.lastSpeed = this.bodies.rocket.speed
     this.status.lifetime = performance.now() - this.status.bornTime
     this.status.fresh = false
+
+    // expired
+    if (this.status.lifetime > MAX_ROCKET_LIFETIME) {
+      this.crash()
+    }
   }
 
   /* -------------------------------------------------------------------------- */
@@ -273,7 +278,7 @@ class Rocket {
     Body.setStatic(fire, true)
   }
 
-  crash = (obstacle) => {
+  crash = (obstacle = {}) => {
     const { world } = this.game.engine
     const { rocket, fire } = this.bodies
     this.state = CRASHED_STATE
@@ -415,6 +420,9 @@ class Rocket {
       collisionStatus.endPoint = endPoint
     })
 
+    inputs.push(rocket.speed)
+    inputs.push(Helper.normalizeAngle(rocket.angle))
+
     return inputs
   }
 
@@ -457,6 +465,7 @@ class Rocket {
       fuelUsed * FUEL_WEIGHT +
       angleDiff * ANGLE_DIFF_WEIGHT +
       this.status.lastSpeed * SPEED_WEIGHT +
+      this.status.lifetime * TIME_WEIGHT +
       Number(this.state === LANDED_STATE) * LANDING_SCORE +
       Number(this.state === CRASHED_STATE) * crashedPenalty
     )

@@ -29,7 +29,9 @@ class Helper {
   }
 
   static isRocket(body) {
-    return body.label.includes(ROCKET_LABEL)
+    return (
+      body.label.includes(ROCKET_LABEL) && body.label !== ROCKET_OTHER_LABEL
+    )
   }
 
   static isRocketFoot(body) {

@@ -32,7 +32,7 @@ const ABANDONED_LABEL = 'abandoned'
 const ROCKET_DIM = 30
 const MAX_ROCKET_FORCE = 10
 const MAX_ROCKET_FUEL = 500
-const ROCKET_FUEL_DECR = 0.3
+const ROCKET_FUEL_DECR = 1.2
 const ROCKET_FORCE_INC = 0.3
 const THRUST_MASS_FACTOR = 1 / 5000
 const REGULAR_STATE = 0
@@ -50,23 +50,28 @@ const RAY_WIDTH = 0.8
 const RAY_LENGTH = 200
 const RAY_SIDE_ANGLE = Math.PI / 2
 const STATS_FONT_SIZE = 20
+// const ROCKET_SPAWN_X = CANVAS_WIDTH / 2
+// const ROCKET_SPAWN_Y = CANVAS_HEIGHT / 2 - 100
 const ROCKET_SPAWN_X = 100
-const ROCKET_SPAWN_Y = 100
+const ROCKET_SPAWN_Y = 200
 const ROCKET_SPAWN_ROT = Math.PI / 3
 // const ROCKET_SPAWN_ROT = 0
-const ROCKET_SPAWN_VEL_X = 1
+const ROCKET_SPAWN_VEL_X = 2
 const ROCKET_SPAWN_VEL_Y = 0
 const ANGULAR_SPEED = 1 / 10
+const MAX_ROCKET_LIFETIME = 10 * 1000 // 8 seconds
 
 /* -------------------------------------------------------------------------- */
 /*                              GENETIC ALGORITHM                             */
 /* -------------------------------------------------------------------------- */
 const MAX_UNIT = 40
-const TOP_UNIT = 8
+const TOP_UNIT = 10
 const FUEL_WEIGHT = -0.04
+const TIME_WEIGHT = -0.001
 const SPEED_WEIGHT = -6
 const ANGLE_DIFF_WEIGHT = 8
 const CRASH_HILL_PENALTY = -10
 const CRASH_BORDER_PENALTY = -40
 const LANDING_SCORE = 100
 const MUTATE_RATE = 0.2
+const INPUT_SIZE = 5

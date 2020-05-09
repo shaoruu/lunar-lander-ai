@@ -43,12 +43,13 @@ body {
 }
 
 #info-and-controls {
+  width: 20vh;
   height: 60vh;
   overflow: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   padding: 0.3em;
   font-size: 2em;
   border: 5px solid rgba(255, 255, 255, 0.082);
