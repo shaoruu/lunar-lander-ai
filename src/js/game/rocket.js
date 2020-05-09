@@ -484,7 +484,6 @@ class Rocket {
       fuelUsed * FUEL_WEIGHT +
       angleDiff * ANGLE_DIFF_WEIGHT +
       this.status.lastSpeed * SPEED_WEIGHT +
-      // this.status.lifetime * TIME_WEIGHT +
       Number(this.state === LANDED_STATE) * LANDING_SCORE +
       Number(this.state === CRASHED_STATE) * crashedPenalty
     )
