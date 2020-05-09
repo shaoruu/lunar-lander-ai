@@ -49,22 +49,17 @@ const RAY_LENGTH = 500
 const STATS_FONT_SIZE = 20
 const ROCKET_SPAWN_X = 200
 const ROCKET_SPAWN_Y = 100
+const ROCKET_SPAWN_ROT = Math.PI / 3
+const ROCKET_SPAWN_VEL_X = 0
+const ROCKET_SPAWN_VEL_Y = 0
 const ANGULAR_SPEED = 1 / 30
 
 /* -------------------------------------------------------------------------- */
 /*                              GENETIC ALGORITHM                             */
 /* -------------------------------------------------------------------------- */
-const MAX_UNIT = 30
-const TOP_UNIT = 5
+const MAX_UNIT = 5
+const TOP_UNIT = 2
 const FUEL_WEIGHT = -0.1
-const HILL_WIDTH_WEIGHT = -0.1
-const HILL_SLOPE_WEIGHT = 0.6
-const HILL_AMPLITUDE_WEIGHT = 0.07
-const ROTATION_WEIGHT = -0.06
 const TIME_WEIGHT = 0.03
 const LANDING_SCORE = 100
 const CRASH_SCORE = -50
-const NETWORK_DX_WEIGHT = 0.3
-const NETWORK_DY_WEIGHT = 0.5
-const NETWORK_SLOPE_WEIGHT = 0.8
-const NETWORK_WIDTH_WEIGHT = 0.8

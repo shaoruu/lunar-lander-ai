@@ -1,11 +1,12 @@
 class Rocket {
-  constructor({ game, x, y, filter }) {
+  constructor({ game, x, y, filter, rotation, velocity }) {
     this.game = game
     this.state = REGULAR_STATE
 
     this.decisions = [this.thrust, this.rotateLeft, this.rotateRight, () => {}]
+    this.defaults = [x, y, filter, rotation, velocity]
 
-    this.initBody(x, y, filter)
+    this.initBody(...this.defaults)
     this.initStatus()
     this.initListeners()
   }
@@ -13,15 +14,20 @@ class Rocket {
   /* -------------------------------------------------------------------------- */
   /*                                    INIT                                    */
   /* -------------------------------------------------------------------------- */
-  initBody = (x, y, filter) => {
+  initBody = (x, y, filter, rot, velocity) => {
     this.bodies = getRocketBody(x, y, ROCKET_DIM, ROCKET_DIM, filter)
-    this.bodies.rocket.gameObject = this // back reference
+
+    const { rocket } = this.bodies
+    rocket.gameObject = this // back reference
+    Body.setAngle(rocket, rot)
+    Body.setVelocity(rocket, velocity)
 
     World.add(this.game.engine.world, [this.bodies.fire, this.bodies.rocket])
   }
 
   initStatus = () => {
     this.status = {
+      fresh: true,
       force: 0,
       fuel: MAX_ROCKET_FUEL,
       focused: false,
@@ -105,6 +111,7 @@ class Rocket {
   syncStatus = () => {
     const { rocket } = this.bodies
     if (
+      !this.status.fresh &&
       Helper.dist(rocket.positionPrev, rocket.position) === 0 &&
       rocket.speed <= SPEED_EPSILON
     ) {
@@ -191,6 +198,7 @@ class Rocket {
   updateStatus = () => {
     this.status.lastSpeed = this.bodies.rocket.speed
     this.status.lifetime = performance.now() - this.status.bornTime
+    this.status.fresh = false
   }
 
   /* -------------------------------------------------------------------------- */
@@ -437,7 +445,7 @@ class Rocket {
     this.status.focused = false
   }
 
-  reset = ({ x, y, filter }) => {
+  reset = () => {
     const { world } = this.game.engine
     const { rocket, fire, abandoned } = this.bodies
 
@@ -459,7 +467,7 @@ class Rocket {
 
     // reset status
     this.state = REGULAR_STATE
-    this.initBody(x, y, filter)
+    this.initBody(...this.defaults)
     this.initStatus()
   }
 }

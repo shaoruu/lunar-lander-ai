@@ -11,10 +11,10 @@ class GeneticAlgorithm {
     this.rockets = []
     this.brains = []
 
-    this.reset()
+    this.initData()
   }
 
-  reset = () => {
+  initData = () => {
     this.iteration = 1
     this.mutateRate = 1
   }
@@ -29,12 +29,29 @@ class GeneticAlgorithm {
           game: this.game,
           x: ROCKET_SPAWN_X,
           y: ROCKET_SPAWN_Y,
-          filter: this.filterGroup
+          filter: this.filterGroup,
+          rotation: ROCKET_SPAWN_ROT,
+          velocity: {
+            x: ROCKET_SPAWN_VEL_X,
+            y: ROCKET_SPAWN_VEL_Y
+          }
         })
       )
   }
 
+  resetRockets = () => {
+    this.rockets.forEach((rocket) => {
+      rocket.reset()
+    })
+  }
+
   update = () => {
+    if (this.actives === 0) {
+      this.iteration++
+      this.evolveBrains()
+      this.resetRockets()
+    }
+
     this.rockets.forEach((rocket) => rocket.update())
   }
 
@@ -50,11 +67,7 @@ class GeneticAlgorithm {
       const newBrain = new synaptic.Architect.Perceptron(3, 6, 4)
       newBrain.index = i
 
-      rocket.reset({
-        x: ROCKET_SPAWN_X,
-        y: ROCKET_SPAWN_Y,
-        filter: this.filterGroup
-      })
+      rocket.reset()
       rocket.registerBrain(newBrain)
 
       this.brains.push(newBrain)
@@ -64,7 +77,10 @@ class GeneticAlgorithm {
   evolveBrains = () => {
     const winners = this.selection()
 
+    console.log(winners[0].gameObject.fitness)
+
     if (this.mutateRate === 1 && winners[0].gameObject.fitness < 0) {
+      console.log('Brains too weak to evolve.')
       this.createBrains()
     } else {
       this.mutateRate = 0.2
@@ -141,5 +157,10 @@ class GeneticAlgorithm {
 
   getRandomBrain = (array) => {
     return array[Helper.randomInt(0, array.length - 1)]
+  }
+
+  get actives() {
+    return this.rockets.filter((rocket) => rocket.state === REGULAR_STATE)
+      .length
   }
 }

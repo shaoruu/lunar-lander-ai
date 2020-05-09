@@ -6,4 +6,5 @@ const Body = Matter.Body
 const World = Matter.World
 const Events = Matter.Events
 const Query = Matter.Query
+const Vector = Matter.Vector
 const MouseConstraint = Matter.MouseConstraint

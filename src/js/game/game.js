@@ -82,7 +82,11 @@ class Game {
           bodyB = temp
         }
 
-        bodyA.parent.gameObject.interact(bodyA, bodyB)
+        try {
+          bodyA.parent.gameObject.interact(bodyA, bodyB)
+        } catch {
+          console.log(bodyA)
+        }
       }
     })
   }
@@ -95,16 +99,29 @@ class Game {
     })
     this.GA.initRockets()
     this.GA.createBrains()
+    // this.rocket = new Rocket({
+    //   game: this,
+    //   x: 200,
+    //   y: 100,
+    //   filter: Body.nextGroup(true),
+    //   rotation: Math.PI / 3,
+    //   velocity: { x: 1, y: 0 }
+    // })
+    // setInterval(() => {
+    //   this.rocket.reset()
+    // }, 3000)
   }
 
   startGame = () => {
     Events.on(this.render, 'afterRender', () => {
       this.stars.draw()
       this.GA.draw()
+      // this.rocket.draw()
     })
 
     Events.on(this.engine, 'afterUpdate', () => {
       this.GA.update()
+      // this.rocket.update()
     })
 
     Engine.run(this.engine)
