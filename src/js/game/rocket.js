@@ -315,21 +315,22 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
         rocket.angle + angle,
         RAY_LENGTH
       )
-      const ray = Helper.getVector(startPoint, endPoint)
       const { point } = Helper.raycast(
         this.game.hills.bodies,
         startPoint,
-        ray,
+        Helper.getVector(startPoint, endPoint),
         RAY_LENGTH
       )
 
       if (point) {
+        // append points to draw
         this.points.push(point)
       }
 
-      this.status.collisions[side].startPoint = startPoint
-      this.status.collisions[side].endPoint = endPoint
-      this.status.collisions[side].point = point
+      const collisionStatus = this.status.collisions[side]
+      collisionStatus.startPoint = startPoint
+      collisionStatus.endPoint = endPoint
+      collisionStatus.point = point
     })
   }
 
