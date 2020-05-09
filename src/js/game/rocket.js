@@ -422,7 +422,7 @@ class Rocket {
         rocket.angle + angle,
         RAY_LENGTH
       )
-      const { point } = Helper.raycast(
+      const { point, body } = Helper.raycast(
         this.game.getObstacles(),
         startPoint,
         Helper.getVector(startPoint, endPoint),
@@ -437,7 +437,10 @@ class Rocket {
         const distance = Helper.dist(startPoint, point)
         collisionStatus.distance = distance
 
-        inputs.push(distance)
+        inputs.push(
+          distance *
+            (Helper.isBorder(body) ? INPUT_BORDER_FACTOR : INPUT_HILLS_FACTOR)
+        )
       } else {
         // TODO: figure out what to put here
         inputs.push(-1)
@@ -447,8 +450,11 @@ class Rocket {
       collisionStatus.endPoint = endPoint
     })
 
-    inputs.push(rocket.speed * SPEED_INPUT_WEIGHT)
-    inputs.push(Helper.toDegrees(Helper.normalizeAngle(rocket.angle)))
+    inputs.push(rocket.speed * INPUT_SPEED_FACTOR)
+    inputs.push(
+      Helper.toDegrees(Helper.normalizeAngle(rocket.angle)) *
+        INPUT_DEGREES_FACTOR
+    )
 
     return inputs
   }
@@ -514,6 +520,7 @@ class Rocket {
 
     // remove body/bodies determining on state
     switch (this.state) {
+      case LANDED_STATE:
       case REGULAR_STATE:
         World.remove(world, rocket)
         World.remove(world, fire)

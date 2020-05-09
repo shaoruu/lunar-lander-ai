@@ -1,4 +1,9 @@
 /* -------------------------------------------------------------------------- */
+/*                                   OPTIONS                                  */
+/* -------------------------------------------------------------------------- */
+const SHOULD_WIREFRAMES = true
+
+/* -------------------------------------------------------------------------- */
 /*                                   CANVAS                                   */
 /* -------------------------------------------------------------------------- */
 const CANVAS_WIDTH = wrapperDOM.clientWidth
@@ -15,12 +20,14 @@ const HILLS_LABEL = 'hills'
 const HILLS_THICKNESS = 5
 const HILLS_COLOR = '#333942'
 const HILLS_AMPLITUDE_FACTOR = 0.4
-const HILLS_INTERVAL = 120
+const HILLS_MIN_INTERVAL = 36
+const HILLS_MAX_INTERVAL = 100
+const HILLS_PERLIN_SCALE = 255
 const HILLS_OFFSET_FACTOR = 0.3
+const HILLS_FLAT_EVERY = 3
 const STAR_RADIUS = 2
 const STAR_OFFSET_FACTOR = 0.5
 const STARS_SPEED = 0.15
-const FLAT_EVERY = 3
 
 /* -------------------------------------------------------------------------- */
 /*                                   ROCKET                                   */
@@ -54,28 +61,25 @@ const ROCKET_SPAWN_Y = 200
 const ROCKET_SPAWN_ROT = Math.PI / 3
 const ROCKET_SPAWN_VEL_X = 2
 const ROCKET_SPAWN_VEL_Y = 0
-const ANGULAR_SPEED = 1 / 10
+const ANGULAR_SPEED = 1 / 8
 const MAX_ROCKET_LIFETIME = 20 * 1000 // 8 seconds
-// const ROCKET_COLORS = ['#6f0000', '#c70039', '#511845', '#342ead', '#501111']
-const ROCKET_COLORS = ['#C4C4C5']
+const ROCKET_COLORS = ['#E18A2E']
 
 /* -------------------------------------------------------------------------- */
 /*                              GENETIC ALGORITHM                             */
 /* -------------------------------------------------------------------------- */
 const MAX_UNIT = 30
-const TOP_UNIT = 5
-const FUEL_WEIGHT = -0.01
-const SPEED_WEIGHT = -12
-const ANGLE_DIFF_WEIGHT = 12
+const TOP_UNIT = 6
+const FUEL_WEIGHT = -0.05
+const SPEED_WEIGHT = -15
+const ANGLE_DIFF_WEIGHT = 15
 const CRASH_HILL_PENALTY = -10
 const CRASH_BORDER_PENALTY = -40
 const LANDING_SCORE = 200
-const MUTATE_RATE = 0.3
+const MUTATE_RATE = 0.4
 const INPUT_SIZE = 6
 const HIGHLIGHT_SIZE = ROCKET_DIM * 1.5
-const SPEED_INPUT_WEIGHT = 100
-
-/* -------------------------------------------------------------------------- */
-/*                                   OPTIONS                                  */
-/* -------------------------------------------------------------------------- */
-const SHOULD_WIREFRAMES = true
+const INPUT_HILLS_FACTOR = 2
+const INPUT_BORDER_FACTOR = 1
+const INPUT_SPEED_FACTOR = 100
+const INPUT_DEGREES_FACTOR = 1

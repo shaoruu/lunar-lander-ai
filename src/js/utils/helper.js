@@ -28,6 +28,10 @@ class Helper {
     return ((max2 - min2) * (v - min1)) / (max1 - min1) + min2
   }
 
+  static isBorder(body) {
+    return body.label.includes(BORDERS_LABEL)
+  }
+
   static isRocket(body) {
     return body.label.includes(ROCKET_LABEL)
   }
@@ -140,6 +144,10 @@ class Helper {
 
   static getZoomRatio(render) {
     return CANVAS_WIDTH / (render.bounds.max.x - render.bounds.min.x)
+  }
+
+  static randomBetween(min, max) {
+    return min + Math.random() * (max - min)
   }
 
   static randomInt(min, max) {

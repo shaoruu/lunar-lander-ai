@@ -51,7 +51,6 @@ class Game {
     this.hills = new Hills({
       engine: this.engine,
       amplitude: CANVAS_HEIGHT * HILLS_AMPLITUDE_FACTOR,
-      interval: HILLS_INTERVAL,
       offset: CANVAS_HEIGHT * HILLS_OFFSET_FACTOR
     })
 

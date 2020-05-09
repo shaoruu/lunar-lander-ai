@@ -1,8 +1,7 @@
 class Hills {
-  constructor({ engine, amplitude, interval, offset }) {
+  constructor({ engine, amplitude, offset }) {
     this.engine = engine
     this.amplitude = amplitude
-    this.interval = interval
     this.offset = offset
 
     this.noise = new Perlin()
@@ -17,11 +16,12 @@ class Hills {
     let inc = 0
 
     const genHeightAt = (x) =>
-      (this.noise.getValue(x / 255 + 1) / 2) * this.amplitude + this.offset
+      (this.noise.getValue(x / HILLS_PERLIN_SCALE + 1) / 2) * this.amplitude +
+      this.offset
 
     for (let i = 0; i <= CANVAS_WIDTH; i += inc) {
       const height =
-        i !== 0 && this.heights.length % FLAT_EVERY === 0
+        i !== 0 && this.heights.length % HILLS_FLAT_EVERY === 0
           ? this.heights[this.heights.length - 1].y
           : genHeightAt(i)
 
@@ -30,7 +30,7 @@ class Hills {
         y: height
       })
 
-      inc = Math.random() * this.interval
+      inc = Helper.randomBetween(HILLS_MIN_INTERVAL, HILLS_MAX_INTERVAL)
       if (i + inc > CANVAS_WIDTH) {
         const height = genHeightAt(CANVAS_WIDTH)
         this.heights.push({ x: CANVAS_WIDTH, y: height })

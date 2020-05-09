@@ -47,7 +47,7 @@ const getRocketBody = (x, y, w, h, filter, color) => {
   const stand = Bodies.rectangle(x, y + Y_OFFSET, w * STAND_SCALE, h * 0.15, {
     label: ROCKET_OTHER_LABEL,
     render: {
-      fillStyle: '#E18A2E'
+      fillStyle: color
     },
     ...commonOptions
   })
