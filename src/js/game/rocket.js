@@ -22,7 +22,7 @@ class Rocket {
     Body.setAngle(rocket, rot)
     Body.setVelocity(rocket, velocity)
 
-    World.add(this.game.engine.world, [this.bodies.fire, this.bodies.rocket])
+    World.add(this.game.engine.world, [this.bodies.fire, rocket])
   }
 
   initStatus = () => {
