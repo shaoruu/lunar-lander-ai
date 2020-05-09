@@ -135,4 +135,20 @@ class Helper {
   static randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
+
+  static getAngleDiff(bodyA, bodyB) {
+    return Helper.toDegrees(
+      Helper.normalizeAngle(Math.abs(bodyA.angle - bodyB.angle))
+    )
+  }
+
+  static listen(obj, attrib, func) {
+    return new Proxy(obj, {
+      set: function (target, key, value) {
+        if (key === attrib) func(value)
+        target[key] = value
+        return true
+      }
+    })
+  }
 }

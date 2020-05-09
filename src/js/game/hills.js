@@ -21,7 +21,7 @@ class Hills {
 
     for (let i = 0; i <= CANVAS_WIDTH; i += inc) {
       const height =
-        i !== 0 && this.heights.length % 4 === 0
+        i !== 0 && this.heights.length % FLAT_EVERY === 0
           ? this.heights[this.heights.length - 1].y
           : genHeightAt(i)
 

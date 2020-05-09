@@ -34,7 +34,9 @@ class Rocket {
       lastSpeed: 0,
       bornTime: performance.now(),
       lifetime: 0,
+      interacted: null,
       hasThrusted: false,
+      crashedType: null,
       collisions: {
         left: {
           startPoint: null,
@@ -205,17 +207,15 @@ class Rocket {
   /*                                   ACTIONS                                  */
   /* -------------------------------------------------------------------------- */
   interact = (part, obstacle) => {
-    const angleDiff = Helper.toDegrees(
-      Helper.normalizeAngle(Math.abs(part.angle - obstacle.angle))
-    )
-
     if (
       !Helper.isRocketFoot(part) ||
-      angleDiff > LANDING_ANGLE_TOLERANCE ||
+      Helper.getAngleDiff(part, obstacle) > LANDING_ANGLE_TOLERANCE ||
       this.status.lastSpeed > SPEED_TOLERANCE
     ) {
-      this.crash()
+      this.crash(obstacle)
     }
+
+    this.status.interacted = obstacle
   }
 
   thrust = () => {
@@ -273,7 +273,7 @@ class Rocket {
     Body.setStatic(fire, true)
   }
 
-  crash = () => {
+  crash = (obstacle) => {
     const { world } = this.game.engine
     const { rocket, fire } = this.bodies
     this.state = CRASHED_STATE
@@ -298,6 +298,7 @@ class Rocket {
     bodyParts.forEach((bp) => Body.setStatic(bp, false))
 
     this.bodies.abandoned = bodyParts
+    this.status.crashedType = obstacle.label
   }
 
   /* -------------------------------------------------------------------------- */
@@ -381,8 +382,8 @@ class Rocket {
     // cast a ray in three directions to see if any hills intersect
     ;[
       [Math.PI / 2, 'bottom'],
-      [0, 'right'],
-      [Math.PI, 'left']
+      [Math.PI / 2 - RAY_SIDE_ANGLE, 'right'],
+      [Math.PI / 2 + RAY_SIDE_ANGLE, 'left']
     ].forEach(([angle, side]) => {
       const endPoint = Helper.getEndPoint(
         startPoint,
@@ -430,11 +431,34 @@ class Rocket {
   get fitness() {
     const fuelUsed = MAX_ROCKET_FUEL - this.status.fuel
 
+    let angleDiff = 0
+    if (this.status.interacted) {
+      angleDiff = Helper.getAngleDiff(
+        this.bodies.rocket,
+        this.status.interacted
+      )
+
+      if (angleDiff > LANDING_ANGLE_TOLERANCE) {
+        angleDiff = -angleDiff
+      }
+    }
+
+    let crashedPenalty = 0
+    switch (this.status.crashedType) {
+      case HILLS_LABEL:
+        crashedPenalty = CRASH_HILL_PENALTY
+        break
+      case BORDERS_LABEL:
+        crashedPenalty = CRASH_BORDER_PENALTY
+        break
+    }
+
     return (
       fuelUsed * FUEL_WEIGHT +
-      this.status.lifetime * TIME_WEIGHT +
+      angleDiff * ANGLE_DIFF_WEIGHT +
+      this.status.lastSpeed * SPEED_WEIGHT +
       Number(this.state === LANDED_STATE) * LANDING_SCORE +
-      Number(this.state === CRASHED_STATE) * CRASH_SCORE
+      Number(this.state === CRASHED_STATE) * crashedPenalty
     )
   }
 

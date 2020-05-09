@@ -6,7 +6,6 @@
 * {
   margin: 0;
   padding: 0;
-  color: #c8c8c8af;
   box-sizing: border-box;
   font-family: 'Retganon';
 }
@@ -20,17 +19,39 @@ body {
   justify-content: center;
 }
 
+#content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #wrapper {
   position: relative;
-  height: 600px;
-  width: 800px;
+  height: 60vh;
+  width: 80vh;
   border: 5px solid rgba(255, 255, 255, 0.082);
 }
 
 #title {
+  color: #c8c8c8af;
   position: absolute;
   top: 10vh;
   left: 50%;
   font-size: 5vh;
+  pointer-events: none;
   transform: translateX(-50%);
+}
+
+#info-and-controls {
+  height: 60vh;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.3em;
+  font-size: 2em;
+  border: 5px solid rgba(255, 255, 255, 0.082);
+  border-left: none;
+  color: #d8ffd4af;
 }

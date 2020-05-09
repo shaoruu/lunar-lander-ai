@@ -12,11 +12,19 @@ class GeneticAlgorithm {
     this.brains = []
 
     this.initData()
+    this.initListeners()
   }
 
   initData = () => {
     this.iteration = 1
     this.mutateRate = 1
+    // this.mutateRate = MUTATE_RATE
+  }
+
+  initListeners = () => {
+    this.proxy = Helper.listen(this, 'iteration', (value) => {
+      DOMChanger.setGeneration(value)
+    })
   }
 
   initRockets = () => {
@@ -47,7 +55,7 @@ class GeneticAlgorithm {
 
   update = () => {
     if (this.actives === 0) {
-      this.iteration++
+      this.proxy.iteration = ++this.iteration
       this.evolveBrains()
       this.resetRockets()
     }
@@ -64,7 +72,7 @@ class GeneticAlgorithm {
 
     for (let i = 0; i < this.maxUnits; i++) {
       const rocket = this.rockets[i]
-      const newBrain = new synaptic.Architect.Perceptron(3, 6, 4)
+      const newBrain = new synaptic.Architect.Perceptron(3, 12, 4)
       newBrain.index = i
 
       rocket.reset()
@@ -83,7 +91,7 @@ class GeneticAlgorithm {
       console.log('Brains too weak to evolve.')
       this.createBrains()
     } else {
-      this.mutateRate = 0.2
+      this.mutateRate = MUTATE_RATE
     }
 
     for (let i = 0; i < this.maxUnits; i++) {
