@@ -127,7 +127,7 @@ class Rocket {
   // update fire position and rotation
   updateVisuals = () => {
     const { rocket, fire } = this.bodies
-    const { x, y } = rocket
+    const { x, y } = rocket.position
     const distFromCenter = Helper.map(
       this.status.force,
       0,
