@@ -93,7 +93,7 @@ class Rocket {
   update = () => {
     if (this.state !== REGULAR_STATE) return
 
-    this.checkStatus()
+    this.syncStatus()
     this.useBrain()
     this.updateControls()
     this.updateVisuals()
@@ -102,7 +102,7 @@ class Rocket {
     this.updateStatus()
   }
 
-  checkStatus = () => {
+  syncStatus = () => {
     const { rocket } = this.bodies
     if (
       Helper.dist(rocket.positionPrev, rocket.position) === 0 &&
@@ -110,6 +110,8 @@ class Rocket {
     ) {
       this.land()
     }
+
+    this.status.hasThrusted = false
   }
 
   updateControls = () => {
@@ -161,13 +163,12 @@ class Rocket {
       `
     }
 
-    if (this.status.hasThrusted) {
-      this.force = Helper.clamp(
-        this.force - 1.2 ** ROCKET_FORCE_INC,
+    if (!this.status.hasThrusted) {
+      this.status.force = Helper.clamp(
+        this.status.force - 1.2 ** ROCKET_FORCE_INC,
         0,
         MAX_ROCKET_FORCE
       )
-      this.status.hasThrusted = false
     }
   }
 
@@ -210,6 +211,8 @@ class Rocket {
   }
 
   thrust = () => {
+    if (this.status.fuel <= 0) return
+
     const { rocket } = this.bodies
     const { angle, position } = rocket
 
@@ -220,12 +223,18 @@ class Rocket {
       y: upwardsForce * Math.sin(angle - Math.PI / 2)
     })
 
-    this.force = Helper.clamp(
-      this.force + ROCKET_FORCE_INC,
+    this.status.force = Helper.clamp(
+      this.status.force + ROCKET_FORCE_INC,
       0,
       MAX_ROCKET_FORCE
     )
-    this.fuel = Helper.clamp(this.fuel - ROCKET_FUEL_DECR, 0, MAX_ROCKET_FUEL)
+    this.status.fuel = Helper.clamp(
+      this.status.fuel - ROCKET_FUEL_DECR,
+      0,
+      MAX_ROCKET_FUEL
+    )
+
+    this.status.hasThrusted = true
   }
 
   rotateLeft = () => {

@@ -86,14 +86,20 @@ class Helper {
     context.stroke()
   }
 
-  static drawPoint(render, point, radius, color) {
+  static drawPoint(render, point, radius, color, drawBehind = true) {
     const context = render.context
     const { x, y } = point
+
+    if (drawBehind) {
+      context.globalCompositeOperation = 'destination-over'
+    }
 
     context.fillStyle = color
     context.beginPath()
     context.ellipse(x, y, radius, radius, 0, 0, Math.PI * 2)
     context.fill()
+
+    context.globalCompositeOperation = 'source-over'
   }
 
   static dist(pos1, pos2) {
