@@ -156,8 +156,10 @@ class Game {
     this.focusedRocket = null
   }
 
-  //! Fix this code
   focusOnRocket = (rocket) => {
+    if (this.focusedRocket) {
+      this.removeFocus()
+    }
     this.focusedRocket = rocket
   }
 

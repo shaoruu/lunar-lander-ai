@@ -199,8 +199,8 @@ class Rocket {
   updateViewport = () => {
     const { body } = this.game.mouseConstraint
     if (body && body.label === 'rocket' && body === this.bodies.rocket) {
-      this.status.focused = true
       this.game.focusOnRocket(this)
+      this.status.focused = true
     }
 
     if (this.status.focused) {
