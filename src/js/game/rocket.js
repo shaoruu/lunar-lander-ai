@@ -7,8 +7,12 @@ class Rocket {
 
     this.initBody(x, y, filter)
     this.initStatus()
+    this.initListeners()
   }
 
+  /* -------------------------------------------------------------------------- */
+  /*                                    INIT                                    */
+  /* -------------------------------------------------------------------------- */
   initBody = (x, y, filter) => {
     this.bodies = getRocketBody(x, y, ROCKET_DIM, ROCKET_DIM, filter)
     this.bodies.rocket.gameObject = this // back reference
@@ -29,20 +33,58 @@ class Rocket {
         left: {
           startPoint: null,
           endPoint: null,
-          point: null
+          distance: null
         },
         right: {
           startPoint: null,
           endPoint: null,
-          point: null
+          distance: null
         },
         bottom: {
           startPoint: null,
           endPoint: null,
-          point: null
+          distance: null
         }
       }
     }
+  }
+
+  initListeners = () => {
+    this.keys = {
+      left: false,
+      right: false,
+      up: false
+    }
+
+    document.addEventListener('keydown', (e) => {
+      const { keyCode } = e
+      switch (keyCode) {
+        case 37:
+          this.keys.left = true
+          break
+        case 38:
+          this.keys.up = true
+          break
+        case 39:
+          this.keys.right = true
+          break
+      }
+    })
+
+    document.addEventListener('keyup', (e) => {
+      const { keyCode } = e
+      switch (keyCode) {
+        case 37:
+          this.keys.left = false
+          break
+        case 38:
+          this.keys.up = false
+          break
+        case 39:
+          this.keys.right = false
+          break
+      }
+    })
   }
 
   /* -------------------------------------------------------------------------- */
@@ -53,6 +95,7 @@ class Rocket {
 
     this.checkStatus()
     this.useBrain()
+    this.updateControls()
     this.updateVisuals()
     this.updateStats()
     this.updateViewport()
@@ -67,6 +110,16 @@ class Rocket {
     ) {
       this.land()
     }
+  }
+
+  updateControls = () => {
+    if (!this.status.focused) return
+
+    const { right, up, left } = this.keys
+
+    if (right && !left) this.rotateRight()
+    if (left && !right) this.rotateLeft()
+    if (up) this.thrust()
   }
 
   // update fire position and rotation
@@ -99,13 +152,13 @@ class Rocket {
       const { rocket } = this.bodies
 
       this.textToRender = `
-thrust: ${this.status.force.toFixed(TO_FIXED)}
-angle: ${Helper.toDegrees(Helper.normalizeAngle(rocket.angle)).toFixed(
-        TO_FIXED
-      )}°
-speed: ${rocket.speed.toFixed(TO_FIXED)}
-fuel: ${this.status.fuel.toFixed(TO_FIXED)}
-`
+        thrust: ${this.status.force.toFixed(TO_FIXED)}
+        angle: ${Helper.toDegrees(Helper.normalizeAngle(rocket.angle)).toFixed(
+          TO_FIXED
+        )}°
+        speed: ${rocket.speed.toFixed(TO_FIXED)}
+        fuel: ${this.status.fuel.toFixed(TO_FIXED)}
+      `
     }
 
     if (this.status.hasThrusted) {
@@ -242,10 +295,10 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
 
   drawCollisionRays = () => {
     if (this.points) {
-      this.points.forEach((depth) => {
+      this.points.forEach((point) => {
         Helper.drawPoint(
           this.game.render,
-          Helper.mapRelativeToFocused(depth, this.game.render),
+          Helper.mapRelativeToFocused(point, this.game.render),
           3 * Helper.getZoomRatio(this.game.render),
           'yellow'
         )
@@ -253,13 +306,13 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
     }
 
     ;['bottom', 'left', 'right'].forEach((side) => {
-      const { startPoint, endPoint, point } = this.status.collisions[side]
+      const { startPoint, endPoint, distance } = this.status.collisions[side]
       if (startPoint) {
         Helper.drawLine(
           this.game.render,
           Helper.mapRelativeToFocused(startPoint, this.game.render),
           Helper.mapRelativeToFocused(endPoint, this.game.render),
-          !!point ? '#fff' : '#666',
+          !!distance ? '#fff' : '#666',
           RAY_WIDTH * Helper.getZoomRatio(this.game.render)
         )
       }
@@ -275,7 +328,7 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
         this.game.render
       )
 
-      const xOffset = ROCKET_DIM * 2
+      const xOffset = 0
       const yOffset = -ROCKET_DIM * 1.4
 
       Helper.renderText(
@@ -285,7 +338,7 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
           x: x + xOffset,
           y: y + yOffset
         },
-        20
+        STATS_FONT_SIZE
       )
     }
   }
@@ -304,6 +357,8 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
 
     this.points = []
 
+    const inputs = []
+
     // cast a ray in three directions to see if any hills intersect
     ;[
       [Math.PI / 2, 'bottom'],
@@ -316,30 +371,39 @@ fuel: ${this.status.fuel.toFixed(TO_FIXED)}
         RAY_LENGTH
       )
       const { point } = Helper.raycast(
-        this.game.hills.bodies,
+        this.game.getObstacles(),
         startPoint,
         Helper.getVector(startPoint, endPoint),
         RAY_LENGTH
       )
 
+      const collisionStatus = this.status.collisions[side]
+
       if (point) {
         // append points to draw
         this.points.push(point)
+        const distance = Helper.dist(startPoint, point)
+        collisionStatus.distance = distance
+
+        inputs.push(distance)
+      } else {
+        // TODO: figure out what to put here
+        inputs.push(-1)
       }
 
-      const collisionStatus = this.status.collisions[side]
       collisionStatus.startPoint = startPoint
       collisionStatus.endPoint = endPoint
-      collisionStatus.point = point
     })
   }
 
   useBrain = () => {
-    const inputs = this.calculateInputs()
-    // const outputs = this.brain.activate(inputs)
-    // const decision = Helpers.argMax(outputs)
+    if (!this.brain) return
 
-    // this.decisions[decision]()
+    const inputs = this.calculateInputs()
+    const outputs = this.brain.activate(inputs)
+    const decision = Helpers.argMax(outputs)
+
+    this.decisions[decision]()
   }
 
   get fitness() {

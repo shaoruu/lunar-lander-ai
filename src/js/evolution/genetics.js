@@ -12,7 +12,7 @@ class GeneticAlgorithm {
     this.brains = []
 
     this.reset()
-    this.setupRockets()
+    this.initRockets()
   }
 
   reset = () => {
@@ -20,7 +20,7 @@ class GeneticAlgorithm {
     this.mutateRate = 1
   }
 
-  setupRockets = () => {
+  initRockets = () => {
     // spawn in "maxUnit" amount of rockets
     for (let i = 0; i < this.maxUnits; i++)
       this.rockets.push(

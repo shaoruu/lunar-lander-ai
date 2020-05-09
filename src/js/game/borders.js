@@ -47,6 +47,8 @@ class Borders {
       commonOptions
     )
 
+    this.bodies = [top, bottom, left, right]
+
     World.add(this.engine.world, [top, bottom, left, right])
   }
 }

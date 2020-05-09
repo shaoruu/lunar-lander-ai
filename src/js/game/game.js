@@ -9,7 +9,7 @@ class Game {
       options: {
         width: CANVAS_WIDTH,
         height: CANVAS_HEIGHT,
-        wireframes: true,
+        wireframes: false,
         background: 'transparent'
         // showCollisions: true
       }
@@ -55,9 +55,13 @@ class Game {
 
       switch (keyCode) {
         case 27: {
+          if (!this.focusedRocket) break
+
           this.zoomOut()
           this.focusedRocket.removeFocus()
           this.focusedRocket = null
+
+          break
         }
       }
     })
@@ -119,5 +123,9 @@ class Game {
   //! Fix this code
   focusOnRocket = (rocket) => {
     this.focusedRocket = rocket
+  }
+
+  getObstacles = () => {
+    return [...this.hills.bodies, ...this.borders.bodies]
   }
 }
