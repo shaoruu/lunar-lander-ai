@@ -52,6 +52,11 @@ class Rocket {
           startPoint: null,
           endPoint: null,
           distance: null
+        },
+        top: {
+          startPoint: null,
+          endPoint: null,
+          distance: null
         }
       }
     }
@@ -330,7 +335,7 @@ class Rocket {
       })
     }
 
-    ;['bottom', 'left', 'right'].forEach((side) => {
+    ;['bottom', 'left', 'right', 'top'].forEach((side) => {
       const { startPoint, endPoint, distance } = this.status.collisions[side]
       if (startPoint) {
         Helper.drawLine(
@@ -386,6 +391,7 @@ class Rocket {
 
     // cast a ray in three directions to see if any hills intersect
     ;[
+      [-Math.PI / 2, 'top'],
       [Math.PI / 2, 'bottom'],
       [Math.PI / 2 - RAY_SIDE_ANGLE, 'right'],
       [Math.PI / 2 + RAY_SIDE_ANGLE, 'left']
@@ -421,7 +427,7 @@ class Rocket {
     })
 
     inputs.push(rocket.speed)
-    inputs.push(Helper.normalizeAngle(rocket.angle))
+    inputs.push(Helper.toDegrees(Helper.normalizeAngle(rocket.angle)))
 
     return inputs
   }
