@@ -32,6 +32,7 @@ class Rocket {
       fuel: MAX_ROCKET_FUEL,
       focused: false,
       lastSpeed: 0,
+      isBest: false,
       bornTime: performance.now(),
       lifetime: 0,
       interacted: null,
@@ -126,6 +127,7 @@ class Rocket {
     }
 
     this.status.hasThrusted = false
+    this.status.isBest = false
   }
 
   updateControls = () => {
@@ -319,6 +321,7 @@ class Rocket {
 
     this.drawCollisionRays()
     this.drawStats()
+    this.drawHighlight()
   }
 
   drawCollisionRays = () => {
@@ -369,6 +372,16 @@ class Rocket {
           y: y + yOffset
         },
         STATS_FONT_SIZE
+      )
+    }
+  }
+
+  drawHighlight = () => {
+    if (this.status.isBest && !this.game.hasFocus) {
+      Helper.drawSquare(
+        this.game.render,
+        this.bodies.rocket.position,
+        HIGHLIGHT_SIZE
       )
     }
   }
@@ -482,6 +495,10 @@ class Rocket {
   /* -------------------------------------------------------------------------- */
   removeFocus = () => {
     this.status.focused = false
+  }
+
+  notifyAsBest = () => {
+    this.status.isBest = true
   }
 
   reset = () => {

@@ -56,10 +56,7 @@ class Game {
       switch (keyCode) {
         case 27: {
           if (!this.focusedRocket) break
-
-          this.zoomOut()
-          this.focusedRocket.removeFocus()
-          this.focusedRocket = null
+          this.removeFocus()
 
           break
         }
@@ -134,6 +131,14 @@ class Game {
     })
   }
 
+  removeFocus = () => {
+    if (!this.focusedRocket) return
+
+    this.zoomOut()
+    this.focusedRocket.removeFocus()
+    this.focusedRocket = null
+  }
+
   //! Fix this code
   focusOnRocket = (rocket) => {
     this.focusedRocket = rocket
@@ -141,5 +146,9 @@ class Game {
 
   getObstacles = () => {
     return [...this.hills.bodies, ...this.borders.bodies]
+  }
+
+  get hasFocus() {
+    return !!this.focusedRocket
   }
 }

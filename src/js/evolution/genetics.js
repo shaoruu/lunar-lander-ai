@@ -15,6 +15,9 @@ class GeneticAlgorithm {
     this.initListeners()
   }
 
+  /* -------------------------------------------------------------------------- */
+  /*                                INTERNAL DATA                               */
+  /* -------------------------------------------------------------------------- */
   initData = () => {
     this.iteration = 1
     this.mutateRate = 1
@@ -32,6 +35,9 @@ class GeneticAlgorithm {
     })
   }
 
+  /* -------------------------------------------------------------------------- */
+  /*                                   ROCKETS                                  */
+  /* -------------------------------------------------------------------------- */
   initRockets = () => {
     this.filterGroup = Body.nextGroup(true)
 
@@ -58,20 +64,35 @@ class GeneticAlgorithm {
     })
   }
 
+  /* -------------------------------------------------------------------------- */
+  /*                              LOOPS AND UPDATES                             */
+  /* -------------------------------------------------------------------------- */
   update = () => {
     if (this.actives === 0) {
       this.iterProxy.iteration = ++this.iteration
+      this.game.removeFocus()
       this.evolveBrains()
       this.resetRockets()
     }
 
     this.rockets.forEach((rocket) => rocket.update())
+
+    this.updateBestRocket()
+  }
+
+  updateBestRocket = () => {
+    const index = Helper.argMax(this.rockets.map((r) => r.fitness))
+    const rocket = this.rockets[index]
+    rocket.notifyAsBest()
   }
 
   draw = () => {
     this.rockets.forEach((rocket) => rocket.draw())
   }
 
+  /* -------------------------------------------------------------------------- */
+  /*                                 ALGORITHMS                                 */
+  /* -------------------------------------------------------------------------- */
   createBrains = () => {
     this.brains.splice(0, this.brains.length)
 
@@ -168,6 +189,9 @@ class GeneticAlgorithm {
     return gene
   }
 
+  /* -------------------------------------------------------------------------- */
+  /*                                   OTHERS                                   */
+  /* -------------------------------------------------------------------------- */
   getRandomBrain = (array) => {
     return array[Helper.randomInt(0, array.length - 1)]
   }

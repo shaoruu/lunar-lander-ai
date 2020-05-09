@@ -59,14 +59,14 @@ const ROCKET_SPAWN_ROT = Math.PI / 3
 const ROCKET_SPAWN_VEL_X = 2
 const ROCKET_SPAWN_VEL_Y = 0
 const ANGULAR_SPEED = 1 / 10
-const MAX_ROCKET_LIFETIME = 10 * 1000 // 8 seconds
+const MAX_ROCKET_LIFETIME = 20 * 1000 // 8 seconds
 
 /* -------------------------------------------------------------------------- */
 /*                              GENETIC ALGORITHM                             */
 /* -------------------------------------------------------------------------- */
 const MAX_UNIT = 40
 const TOP_UNIT = 10
-const FUEL_WEIGHT = -0.04
+const FUEL_WEIGHT = -0.01
 const TIME_WEIGHT = -0.001
 const SPEED_WEIGHT = -6
 const ANGLE_DIFF_WEIGHT = 8
@@ -75,3 +75,4 @@ const CRASH_BORDER_PENALTY = -40
 const LANDING_SCORE = 100
 const MUTATE_RATE = 0.2
 const INPUT_SIZE = 5
+const HIGHLIGHT_SIZE = ROCKET_DIM * 1.5

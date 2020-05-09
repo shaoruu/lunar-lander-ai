@@ -102,6 +102,16 @@ class Helper {
     context.globalCompositeOperation = 'source-over'
   }
 
+  static drawSquare(render, position, dimension, color = '#FFFF00AF') {
+    const context = render.context
+    const { x, y } = position
+
+    context.beginPath()
+    context.strokeStyle = color
+    context.rect(x - dimension / 2, y - dimension / 2, dimension, dimension)
+    context.stroke()
+  }
+
   static dist(pos1, pos2) {
     return Math.sqrt((pos1.x - pos2.x) ** 2 + (pos1.y - pos2.y) ** 2)
   }
