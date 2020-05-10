@@ -93,6 +93,7 @@ const getRocketBody = (x, y, w, h, filter) => {
     h * 0.1,
     {
       label: ROCKET_FOOT_LABEL,
+      friction: 3,
       render: {
         fillStyle: ROCKET_FOOT_COLOR
       },
@@ -106,6 +107,7 @@ const getRocketBody = (x, y, w, h, filter) => {
     h * 0.1,
     {
       label: ROCKET_FOOT_LABEL,
+      friction: 3,
       render: {
         fillStyle: ROCKET_FOOT_COLOR
       },
