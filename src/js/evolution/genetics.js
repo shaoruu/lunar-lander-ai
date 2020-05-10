@@ -97,7 +97,7 @@ class GeneticAlgorithm {
 
     for (let i = 0; i < this.maxUnits; i++) {
       const rocket = this.rockets[i]
-      const newBrain = new synaptic.Architect.Perceptron(INPUT_SIZE, 6, 4)
+      const newBrain = new synaptic.Architect.Perceptron(INPUT_SIZE, 12, 4)
       newBrain.index = i
 
       rocket.reset()
