@@ -525,15 +525,6 @@ class Rocket {
         break
     }
 
-    // console.log(
-    //   angleDiff * ANGLE_DIFF_WEIGHT,
-    //   this.status.fuel * FUEL_WEIGHT,
-    //   this.status.lastSpeed * SPEED_WEIGHT,
-    //   this.status.closest.distance * TARGET_WEIGHT,
-    //   Number(this.state === LANDED_STATE) * LANDING_SCORE,
-    //   Number(this.state === CRASHED_STATE) * crashedPenalty
-    // )
-
     return (
       angleDiff * ANGLE_DIFF_WEIGHT +
       this.status.fuel * FUEL_WEIGHT +
