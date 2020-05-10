@@ -528,7 +528,6 @@ class Rocket {
     return (
       angleDiff * ANGLE_DIFF_WEIGHT +
       this.status.fuel * FUEL_WEIGHT +
-      this.status.lifetime * TIME_WEIGHT +
       this.status.lastSpeed * SPEED_WEIGHT +
       this.status.closest.distance * TARGET_WEIGHT +
       Number(this.state === LANDED_STATE) * LANDING_SCORE +
