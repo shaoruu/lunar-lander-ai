@@ -15,7 +15,7 @@ class Stars {
       const y = Math.random() * (CANVAS_HEIGHT - this.offset)
 
       // position and color
-      this.stars.push([{ x, y }, Math.random() / 2])
+      this.stars.push([{ x, y }, Math.random()])
     }
   }
 

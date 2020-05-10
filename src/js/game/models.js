@@ -1,5 +1,5 @@
 /* ROCKET */
-const getRocketBody = (x, y, w, h, filter, color) => {
+const getRocketBody = (x, y, w, h, filter) => {
   const Y_OFFSET = h * 0
 
   const commonOptions = {
@@ -20,8 +20,8 @@ const getRocketBody = (x, y, w, h, filter, color) => {
     {
       label: ROCKET_OTHER_LABEL,
       render: {
-        fillStyle: '#B5D2E1',
-        opacity: 0.7
+        fillStyle: ROCKET_BODY_COLOR,
+        opacity: 0.4
       },
       // mass: 0.01,
       ...commonOptions
@@ -36,7 +36,7 @@ const getRocketBody = (x, y, w, h, filter, color) => {
     {
       label: ROCKET_OTHER_LABEL,
       render: {
-        fillStyle: '#DDCFB5'
+        fillStyle: ROCKET_ENGINE_COLOR
       },
       ...commonOptions
     }
@@ -47,7 +47,7 @@ const getRocketBody = (x, y, w, h, filter, color) => {
   const stand = Bodies.rectangle(x, y + Y_OFFSET, w * STAND_SCALE, h * 0.15, {
     label: ROCKET_OTHER_LABEL,
     render: {
-      fillStyle: color
+      fillStyle: ROCKET_STAND_COLOR
     },
     ...commonOptions
   })
@@ -63,7 +63,7 @@ const getRocketBody = (x, y, w, h, filter, color) => {
     {
       label: ROCKET_OTHER_LABEL,
       render: {
-        fillStyle: '#EAC580'
+        fillStyle: ROCKET_LEG_COLOR
       },
       angle: -Math.PI / 2 + LEG_ANGLE,
       ...commonOptions
@@ -77,7 +77,7 @@ const getRocketBody = (x, y, w, h, filter, color) => {
     {
       label: ROCKET_OTHER_LABEL,
       render: {
-        fillStyle: '#EAC580'
+        fillStyle: ROCKET_LEG_COLOR
       },
       angle: -Math.PI / 2 - LEG_ANGLE,
       ...commonOptions
@@ -94,7 +94,7 @@ const getRocketBody = (x, y, w, h, filter, color) => {
     {
       label: ROCKET_FOOT_LABEL,
       render: {
-        fillStyle: '#D65747'
+        fillStyle: ROCKET_FOOT_COLOR
       },
       ...commonOptions
     }
@@ -107,7 +107,7 @@ const getRocketBody = (x, y, w, h, filter, color) => {
     {
       label: ROCKET_FOOT_LABEL,
       render: {
-        fillStyle: '#D65747'
+        fillStyle: ROCKET_FOOT_COLOR
       },
       ...commonOptions
     }
@@ -117,7 +117,7 @@ const getRocketBody = (x, y, w, h, filter, color) => {
   const fire = Bodies.polygon(x, y + Y_OFFSET, 3, w * FIRE_SCALE, {
     label: ROCKET_OTHER_LABEL,
     render: {
-      fillStyle: '#F47423'
+      fillStyle: ROCKET_FIRE_COLOR
     },
     collisionFilter: { group: filter },
     angle: -Math.PI / 2,

@@ -45,6 +45,8 @@ class Hills {
       const { x: cx, y: cy } = Helper.adjustCoords(this.heights[i])
       const { x: nx, y: ny } = Helper.adjustCoords(this.heights[i + 1])
 
+      const isTarget = i % HILLS_FLAT_EVERY === HILLS_FLAT_EVERY - 1
+
       const dx = nx - cx
       const dy = ny - cy
 
@@ -63,14 +65,38 @@ class Hills {
           friction: 3,
           frictionStatic: 3,
           render: {
-            fillStyle: HILLS_COLOR
+            // fillStyle: HILLS_COLOR
+            fillStyle: isTarget ? HILLS_TARGET_COLOR : HILLS_COLOR,
+            strokeStyle: isTarget ? HILLS_TARGET_COLOR : HILLS_COLOR
           }
         }
       )
+
+      newBody.isTarget = isTarget
 
       this.bodies.push(newBody)
     }
 
     World.add(this.engine.world, this.bodies)
+  }
+
+  getClosest = (body) => {
+    let closest = null
+    let min = Number.MAX_SAFE_INTEGER
+
+    for (let i = 0; i < this.bodies.length; i++) {
+      const hill = this.bodies[i]
+      if (!hill.isTarget) continue
+
+      const dist = Helper.dist(hill.position, body.position)
+      if (min > dist) {
+        min = dist
+        closest = hill
+      } else if (!!closest && dist > min) {
+        break
+      }
+    }
+
+    return closest
   }
 }

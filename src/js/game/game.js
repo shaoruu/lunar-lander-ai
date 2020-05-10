@@ -133,7 +133,6 @@ class Game {
     Events.on(this.engine, 'afterUpdate', () => {
       this.GA.update()
       // this.rocket.update()
-      // console.log(this.rocket.fitness)
     })
 
     Engine.run(this.engine)

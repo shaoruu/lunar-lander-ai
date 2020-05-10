@@ -4,14 +4,7 @@ class Rocket {
     this.state = REGULAR_STATE
 
     this.decisions = [this.thrust, this.rotateLeft, this.rotateRight, () => {}]
-    this.defaults = [
-      x,
-      y,
-      filter,
-      rotation,
-      velocity,
-      Helper.getRandomRocketColor()
-    ]
+    this.defaults = [x, y, filter, rotation, velocity]
 
     this.initBody(...this.defaults)
     this.initStatus()
@@ -21,8 +14,8 @@ class Rocket {
   /* -------------------------------------------------------------------------- */
   /*                                    INIT                                    */
   /* -------------------------------------------------------------------------- */
-  initBody = (x, y, filter, rot, velocity, color) => {
-    this.bodies = getRocketBody(x, y, ROCKET_DIM, ROCKET_DIM, filter, color)
+  initBody = (x, y, filter, rot, velocity) => {
+    this.bodies = getRocketBody(x, y, ROCKET_DIM, ROCKET_DIM, filter)
 
     const { rocket } = this.bodies
     rocket.gameObject = this // back reference
@@ -45,6 +38,10 @@ class Rocket {
       interacted: null,
       hasThrusted: false,
       crashedType: null,
+      closest: {
+        body: null,
+        distance: null
+      },
       collisions: {
         left: {
           startPoint: null,
@@ -329,6 +326,7 @@ class Rocket {
     this.drawCollisionRays()
     this.drawStats()
     this.drawHighlight()
+    this.drawClosestTarget()
   }
 
   drawCollisionRays = () => {
@@ -393,6 +391,23 @@ class Rocket {
     }
   }
 
+  drawClosestTarget = () => {
+    if (!this.status.focused || !this.status.closest.body) return
+
+    Helper.drawLine(
+      this.game.render,
+      Helper.mapRelativeToFocused(
+        this.status.closest.body.position,
+        this.game.render
+      ),
+      Helper.mapRelativeToFocused(
+        this.bodies.rocket.position,
+        this.game.render
+      ),
+      '#543143'
+    )
+  }
+
   /* -------------------------------------------------------------------------- */
   /*                              GENETIC ALGORITHM                             */
   /* -------------------------------------------------------------------------- */
@@ -443,12 +458,18 @@ class Rocket {
         )
       } else {
         // TODO: figure out what to put here
-        inputs.push(-1)
+        inputs.push(null)
       }
 
       collisionStatus.startPoint = startPoint
       collisionStatus.endPoint = endPoint
     })
+
+    const closest = this.game.hills.getClosest(rocket)
+    const distanceToClosest = Helper.dist(closest.position, rocket.position)
+    this.status.closest.body = closest
+    this.status.closest.distance = distanceToClosest
+    inputs.push(distanceToClosest)
 
     inputs.push(rocket.speed * INPUT_SPEED_FACTOR)
     inputs.push(
@@ -470,6 +491,7 @@ class Rocket {
   }
 
   get fitness() {
+    const { rocket } = this.bodies
     const fuelUsed = MAX_ROCKET_FUEL - this.status.fuel
 
     let angleDiff = 0
@@ -498,6 +520,7 @@ class Rocket {
       fuelUsed * FUEL_WEIGHT +
       angleDiff * ANGLE_DIFF_WEIGHT +
       this.status.lastSpeed * SPEED_WEIGHT +
+      this.status.closest.distance * TARGET_WEIGHT +
       Number(this.state === LANDED_STATE) * LANDING_SCORE +
       Number(this.state === CRASHED_STATE) * crashedPenalty
     )
