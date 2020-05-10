@@ -3,7 +3,7 @@ const getRocketBody = (x, y, w, h, filter) => {
   const Y_OFFSET = h * 0
 
   const commonOptions = {
-    slop: 0.05,
+    slop: 0,
     density: 1,
     restitution: 0,
     collisionFilter: {

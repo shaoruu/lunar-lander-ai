@@ -110,7 +110,6 @@ class Rocket {
   /* -------------------------------------------------------------------------- */
   update = () => {
     if (this.state !== REGULAR_STATE) return
-
     this.syncStatus()
     this.useBrain()
     this.updateControls()
@@ -124,7 +123,8 @@ class Rocket {
     const { rocket } = this.bodies
     if (
       !this.status.fresh &&
-      Helper.dist(rocket.positionPrev, rocket.position) === 0 &&
+      Helper.dist(rocket.positionPrev, rocket.position) <=
+        ROCKET_LANDING_EPSILON &&
       rocket.speed <= SPEED_EPSILON
     ) {
       this.land()
@@ -180,6 +180,7 @@ class Rocket {
         )}°
         speed: ${rocket.speed.toFixed(TO_FIXED)}
         fuel: ${this.status.fuel.toFixed(TO_FIXED)}
+        fitness: ${this.fitness.toFixed(TO_FIXED)}
       `
     }
 
@@ -205,6 +206,8 @@ class Rocket {
         x: FOCUS_PADDING,
         y: FOCUS_PADDING
       })
+
+      console.log(this)
     }
   }
 
@@ -223,6 +226,8 @@ class Rocket {
   /*                                   ACTIONS                                  */
   /* -------------------------------------------------------------------------- */
   interact = (part, obstacle) => {
+    this.status.interacted = obstacle
+
     if (
       !Helper.isRocketFoot(part) ||
       Helper.getAngleDiff(part, obstacle) > LANDING_ANGLE_TOLERANCE ||
@@ -230,8 +235,6 @@ class Rocket {
     ) {
       this.crash(obstacle)
     }
-
-    this.status.interacted = obstacle
   }
 
   thrust = () => {
@@ -315,6 +318,13 @@ class Rocket {
 
     this.bodies.abandoned = bodyParts
     this.status.crashedType = obstacle.label
+
+    setTimeout(() => {
+      if (this.bodies.abandoned) {
+        this.bodies.abandoned.forEach((a) => World.remove(world, a))
+        this.bodies.abandoned = undefined
+      }
+    }, ROCKET_LEFTOVER_DELAY)
   }
 
   /* -------------------------------------------------------------------------- */
@@ -458,7 +468,8 @@ class Rocket {
         )
       } else {
         // TODO: figure out what to put here
-        inputs.push(null)
+        collisionStatus.distance = null
+        inputs.push(-1)
       }
 
       collisionStatus.startPoint = startPoint
@@ -485,15 +496,13 @@ class Rocket {
 
     const inputs = this.calculateInputs()
     const outputs = this.brain.activate(inputs)
-    const decision = Helper.argMax(outputs)
 
-    this.decisions[decision]()
+    for (let i = 0; i < outputs.length; i++) {
+      if (outputs[i] > 0.5) this.decisions[i]()
+    }
   }
 
   get fitness() {
-    const { rocket } = this.bodies
-    const fuelUsed = MAX_ROCKET_FUEL - this.status.fuel
-
     let angleDiff = 0
     if (this.status.interacted) {
       angleDiff = Helper.getAngleDiff(
@@ -516,9 +525,19 @@ class Rocket {
         break
     }
 
+    // console.log(
+    //   angleDiff * ANGLE_DIFF_WEIGHT,
+    //   this.status.fuel * FUEL_WEIGHT,
+    //   this.status.lastSpeed * SPEED_WEIGHT,
+    //   this.status.closest.distance * TARGET_WEIGHT,
+    //   Number(this.state === LANDED_STATE) * LANDING_SCORE,
+    //   Number(this.state === CRASHED_STATE) * crashedPenalty
+    // )
+
     return (
-      fuelUsed * FUEL_WEIGHT +
       angleDiff * ANGLE_DIFF_WEIGHT +
+      this.status.fuel * FUEL_WEIGHT +
+      this.status.lifetime * TIME_WEIGHT +
       this.status.lastSpeed * SPEED_WEIGHT +
       this.status.closest.distance * TARGET_WEIGHT +
       Number(this.state === LANDED_STATE) * LANDING_SCORE +
@@ -549,7 +568,9 @@ class Rocket {
         World.remove(world, fire)
         break
       case CRASHED_STATE:
-        abandoned.forEach((rb) => World.remove(world, rb))
+        if (abandoned) {
+          abandoned.forEach((rb) => World.remove(world, rb))
+        }
         break
     }
 

@@ -45,13 +45,14 @@ class Hills {
       const { x: cx, y: cy } = Helper.adjustCoords(this.heights[i])
       const { x: nx, y: ny } = Helper.adjustCoords(this.heights[i + 1])
 
-      const isTarget = i % HILLS_FLAT_EVERY === HILLS_FLAT_EVERY - 1
-
       const dx = nx - cx
       const dy = ny - cy
 
       const width = Helper.magnitude({ x: dx, y: dy })
       const angle = Math.atan2(dy, dx)
+      const slope = dy / dx
+
+      const isTarget = Math.abs(slope) < HILLS_TARGET_SLOPE
 
       const newBody = Bodies.rectangle(
         (cx + nx) / 2,
@@ -63,11 +64,12 @@ class Hills {
           angle,
           isStatic: true,
           friction: 3,
-          frictionStatic: 3,
+          frictionStatic: 4,
           render: {
             // fillStyle: HILLS_COLOR
             fillStyle: isTarget ? HILLS_TARGET_COLOR : HILLS_COLOR,
-            strokeStyle: isTarget ? HILLS_TARGET_COLOR : HILLS_COLOR
+            strokeStyle: isTarget ? HILLS_TARGET_COLOR : HILLS_COLOR,
+            opacity: 1 / slope
           }
         }
       )

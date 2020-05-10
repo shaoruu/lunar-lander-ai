@@ -56,8 +56,8 @@ class Game {
 
     this.stars = new Stars({
       render: this.render,
-      count: 20,
-      offset: CANVAS_HEIGHT * STAR_OFFSET_FACTOR
+      count: STARS_COUNT,
+      offset: CANVAS_HEIGHT * STARS_OFFSET_FACTOR
     })
 
     this.initEvents()

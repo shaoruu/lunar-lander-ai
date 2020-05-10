@@ -37,7 +37,7 @@ class Helper {
   }
 
   static isRocketFoot(body) {
-    return body
+    return body.label.includes(ROCKET_FOOT_LABEL)
   }
 
   static toDegrees(r) {

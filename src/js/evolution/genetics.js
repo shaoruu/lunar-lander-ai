@@ -97,7 +97,11 @@ class GeneticAlgorithm {
 
     for (let i = 0; i < this.maxUnits; i++) {
       const rocket = this.rockets[i]
-      const newBrain = new synaptic.Architect.Perceptron(INPUT_SIZE, 12, 4)
+      const newBrain = new synaptic.Architect.Perceptron(
+        INPUT_SIZE,
+        HIDDEN_NEURONS,
+        4
+      )
       newBrain.index = i
 
       rocket.reset()
@@ -119,14 +123,14 @@ class GeneticAlgorithm {
       this.mutateRate = MUTATE_RATE
     }
 
-    for (let i = 0; i < this.maxUnits; i++) {
+    for (let i = this.topUnits; i < this.maxUnits; i++) {
       let offspring
 
-      if (i === this.topUnits) {
+      if (i < this.topUnits + CROSSOVER_WINNER_COUNT) {
         const parentA = winners[0].toJSON()
         const parentB = winners[1].toJSON()
         offspring = this.crossOver(parentA, parentB)
-      } else if (i < this.maxUnits - 2) {
+      } else if (i < this.maxUnits - CROSSOVER_WINNER_COUNT) {
         const parentA = this.getRandomBrain(winners).toJSON()
         const parentB = this.getRandomBrain(winners).toJSON()
         offspring = this.crossOver(parentA, parentB)
@@ -193,6 +197,30 @@ class GeneticAlgorithm {
   /* -------------------------------------------------------------------------- */
   getRandomBrain = (array) => {
     return array[Helper.randomInt(0, array.length - 1)]
+  }
+
+  getRandomProbBrain = (array) => {
+    const totalFitness = array.reduce((acc, cur) => {
+      return acc + cur.gameObject.fitness
+    })
+
+    const normalizedWinners = array.map((winner) => {
+      return {
+        brain: winner,
+        prob: winner.gameObject.fitness / totalFitness
+      }
+    })
+
+    const winner = Math.random()
+    let threshold = 0
+    for (let i = 0; i < normalizedWinners.length; i++) {
+      threshold += normalizedWinners[i].prob
+      if (threshold > winner) {
+        return normalizedWinners[i].brain
+      }
+    }
+
+    return normalizedWinners[0].brain
   }
 
   get actives() {
