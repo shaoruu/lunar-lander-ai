@@ -126,7 +126,7 @@ class GeneticAlgorithm {
     for (let i = this.topUnits; i < this.maxUnits; i++) {
       let offspring
 
-      if (i < this.topUnits + CROSSOVER_WINNER_COUNT) {
+      if (i < this.topUnits + TOP_WINNERS_COUNT) {
         const parentA = winners[0].toJSON()
         const parentB = winners[1].toJSON()
         offspring = this.crossOver(parentA, parentB)
