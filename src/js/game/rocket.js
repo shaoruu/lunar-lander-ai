@@ -108,15 +108,16 @@ class Rocket {
   /* -------------------------------------------------------------------------- */
   /*                                   UPDATES                                  */
   /* -------------------------------------------------------------------------- */
-  update = () => {
+  update = (delta) => {
     if (this.state !== REGULAR_STATE) return
+
     this.syncStatus()
     this.useBrain()
     this.updateControls()
     this.updateVisuals()
     this.updateStats()
     this.updateViewport()
-    this.updateStatus()
+    this.updateStatus(delta)
   }
 
   syncStatus = () => {
@@ -125,7 +126,8 @@ class Rocket {
       !this.status.fresh &&
       Helper.dist(rocket.positionPrev, rocket.position) <=
         ROCKET_LANDING_EPSILON &&
-      rocket.speed <= SPEED_EPSILON
+      rocket.speed <= SPEED_EPSILON &&
+      rocket.angularSpeed <= 0
     ) {
       this.land()
     }
@@ -209,13 +211,16 @@ class Rocket {
     }
   }
 
-  updateStatus = () => {
+  updateStatus = (delta) => {
     this.status.lastSpeed = this.bodies.rocket.speed
-    this.status.lifetime = performance.now() - this.status.bornTime
+    this.status.lifetime += delta
     this.status.fresh = false
 
     // expired
-    if (this.status.lifetime > MAX_ROCKET_LIFETIME) {
+    if (
+      this.status.lifetime >
+      MAX_ROCKET_LIFETIME / this.game.runner.speedFactor
+    ) {
       this.crash()
     }
   }

@@ -61,7 +61,6 @@ body {
 }
 
 #info-and-controls div {
-  flex: 1;
   width: 100%;
 }
 
@@ -94,4 +93,28 @@ body {
 
 .control:focus {
   outline: none;
+}
+
+#btn-pause:disabled {
+  cursor: not-allowed;
+  color: rgba(128, 128, 128, 0.212);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+#info,
+#controls {
+  flex: 1;
+}
+
+#speed {
+  width: 100%;
+  border-top: 5px solid rgba(255, 255, 255, 0.082);
+  display: flex;
+  padding: 0.3em;
+  align-items: center;
+  justify-content: center;
+}
+
+#speed p {
+  margin-right: 0.5em;
 }

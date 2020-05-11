@@ -66,7 +66,7 @@ class GeneticAlgorithm {
   /* -------------------------------------------------------------------------- */
   /*                              LOOPS AND UPDATES                             */
   /* -------------------------------------------------------------------------- */
-  update = () => {
+  update = (delta) => {
     if (this.actives === 0) {
       this.iterProxy.iteration = ++this.iteration
       this.game.removeFocus()
@@ -74,7 +74,7 @@ class GeneticAlgorithm {
       this.resetRockets()
     }
 
-    this.rockets.forEach((rocket) => rocket.update())
+    this.rockets.forEach((rocket) => rocket.update(delta))
 
     this.updateBestRocket()
   }

@@ -32,6 +32,8 @@ class Game {
       }
     })
 
+    this.runner = Runner.create({ speedFactor: 1 })
+
     this.mouse = Mouse.create(this.render.canvas)
     this.mouseConstraint = MouseConstraint.create(this.engine, {
       mouse: this.mouse,
@@ -64,6 +66,9 @@ class Game {
       count: STARS_COUNT,
       offset: CANVAS_HEIGHT * STARS_OFFSET_FACTOR
     })
+
+    this.paused = false
+    this.lastTime = performance.now()
 
     this.initEvents()
     this.initRockets()
@@ -102,6 +107,26 @@ class Game {
         'showColliRays',
         'Collision Rays'
       )
+    })
+
+    this.speedProxy = Helper.listen(this.runner, 'speedFactor', (value) => {
+      if (value > 1) pausePlayButtonDOM.disabled = true
+      else pausePlayButtonDOM.disabled = false
+      speedTextDOM.innerHTML = `${value}X`
+    })
+
+    slowDownButtonDOM.addEventListener('click', this.slowDown)
+
+    speedUpButtonDOM.addEventListener('click', this.speedUp)
+
+    pausePlayButtonDOM.addEventListener('click', () => {
+      if (this.paused) {
+        this.resume()
+        pausePlayButtonDOM.innerHTML = 'II'
+      } else {
+        this.pause()
+        pausePlayButtonDOM.innerHTML = '>'
+      }
     })
 
     Events.on(this.engine, 'collisionStart', (e) => {
@@ -150,17 +175,20 @@ class Game {
 
   startGame = () => {
     Events.on(this.render, 'afterRender', () => {
-      this.stars.draw()
+      this.stars.draw(this.paused)
       this.GA.draw()
       // this.rocket.draw()
     })
 
-    Events.on(this.engine, 'afterUpdate', () => {
-      this.GA.update()
+    Events.on(this.runner, 'afterUpdate', () => {
+      if (this.paused) return
+      this.GA.update(performance.now() - this.lastTime)
+      this.lastTime = performance.now()
       // this.rocket.update()
     })
 
-    Engine.run(this.engine)
+    // Engine.run(this.engine)
+    Runner.run(this.runner, this.engine)
     Render.run(this.render)
   }
 
@@ -188,6 +216,37 @@ class Game {
 
   getObstacles = () => {
     return [...this.hills.bodies, ...this.borders.bodies]
+  }
+
+  pause = () => {
+    this.paused = true
+
+    while (this.runner.speedFactor > 0) {
+      Runner.stop(this.runner, this.engine)
+      this.speedProxy.speedFactor--
+    }
+  }
+
+  resume = () => {
+    this.pause()
+
+    Runner.start(this.runner, this.engine)
+    this.speedProxy.speedFactor = 1
+
+    this.paused = false
+  }
+
+  speedUp = () => {
+    if (this.paused) return
+    // hack to speed engine up
+    Runner.start(this.runner, this.engine)
+    this.speedProxy.speedFactor++
+  }
+
+  slowDown = () => {
+    if (this.paused || this.runner.speedFactor <= 1) return
+    Runner.stop(this.runner)
+    this.speedProxy.speedFactor--
   }
 
   restart = () => {

@@ -8,3 +8,4 @@ const Events = Matter.Events
 const Query = Matter.Query
 const Vector = Matter.Vector
 const MouseConstraint = Matter.MouseConstraint
+const Runner = Matter.Runner

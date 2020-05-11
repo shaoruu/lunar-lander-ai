@@ -64,7 +64,7 @@ class Hills {
           angle,
           isStatic: true,
           friction: 3,
-          frictionStatic: 10,
+          frictionStatic: 11,
           render: {
             // fillStyle: HILLS_COLOR
             fillStyle: isTarget ? HILLS_TARGET_COLOR : HILLS_COLOR,
