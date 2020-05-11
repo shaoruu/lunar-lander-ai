@@ -62,6 +62,26 @@ class Rocket {
           startPoint: null,
           endPoint: null,
           distance: null
+        },
+        topLeft: {
+          startPoint: null,
+          endPoint: null,
+          distance: null
+        },
+        topRight: {
+          startPoint: null,
+          endPoint: null,
+          distance: null
+        },
+        bottomLeft: {
+          startPoint: null,
+          endPoint: null,
+          distance: null
+        },
+        bottomRight: {
+          startPoint: null,
+          endPoint: null,
+          distance: null
         }
       }
     }
@@ -356,7 +376,16 @@ class Rocket {
       })
     }
 
-    ;['bottom', 'left', 'right', 'top'].forEach((side) => {
+    ;[
+      'bottom',
+      'left',
+      'right',
+      'top',
+      'topLeft',
+      'topRight',
+      'bottomLeft',
+      'bottomRight'
+    ].forEach((side) => {
       const { startPoint, endPoint, distance } = this.status.collisions[side]
       if (startPoint) {
         Helper.drawLine(
@@ -447,7 +476,11 @@ class Rocket {
       [-Math.PI / 2, 'top'],
       [Math.PI / 2, 'bottom'],
       [Math.PI / 2 - RAY_SIDE_ANGLE, 'right'],
-      [Math.PI / 2 + RAY_SIDE_ANGLE, 'left']
+      [Math.PI / 2 + RAY_SIDE_ANGLE, 'left'],
+      [Math.PI / 2 - RAY_SIDE_ANGLE / 2, 'bottomRight'],
+      [Math.PI / 2 + RAY_SIDE_ANGLE / 2, 'bottomLeft'],
+      [-Math.PI / 2 - RAY_SIDE_ANGLE / 2, 'topRight'],
+      [-Math.PI / 2 + RAY_SIDE_ANGLE / 2, 'topLeft']
     ].forEach(([angle, side]) => {
       const endPoint = Helper.getEndPoint(
         startPoint,

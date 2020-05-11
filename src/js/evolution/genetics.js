@@ -160,12 +160,13 @@ class GeneticAlgorithm {
   }
 
   crossOver = (parentA, parentB) => {
-    for (let i = 0; i < parentA.neurons.length; i++) {
-      if (Helper.randomInt(0, 1) === 1) {
-        const biasFromParentA = parentA.neurons[i].bias
-        parentA.neurons[i].bias = parentB.neurons[i].bias
-        parentB.neurons[i].bias = biasFromParentA
-      }
+    const cutPoint = Helper.randomInt(0, parentA.neurons.length - 1)
+    for (let i = cutPoint; i < parentA.neurons.length; i++) {
+      // if (Helper.randomInt(0, 1) === 1) {
+      const biasFromParentA = parentA.neurons[i].bias
+      parentA.neurons[i].bias = parentB.neurons[i].bias
+      parentB.neurons[i].bias = biasFromParentA
+      // }
     }
 
     return Helper.randomInt(0, 1) === 1 ? parentA : parentB
