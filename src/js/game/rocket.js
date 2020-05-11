@@ -492,7 +492,7 @@ class Rocket {
   }
 
   useBrain = () => {
-    if (!this.brain) return
+    if (!this.brain || this.status.interacted) return
 
     const inputs = this.calculateInputs()
     const outputs = this.brain.activate(inputs)
