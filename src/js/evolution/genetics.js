@@ -195,6 +195,15 @@ class GeneticAlgorithm {
   /* -------------------------------------------------------------------------- */
   /*                                   OTHERS                                   */
   /* -------------------------------------------------------------------------- */
+  restart = () => {
+    this.fitProxy.fittest = -1
+    this.iterProxy.iteration = 1
+
+    this.initData()
+    this.resetRockets()
+    this.createBrains()
+  }
+
   getRandomBrain = (array) => {
     return array[Helper.randomInt(0, array.length - 1)]
   }

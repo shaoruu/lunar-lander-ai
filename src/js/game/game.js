@@ -43,6 +43,11 @@ class Game {
       }
     })
 
+    this.options = {
+      showTarget: false,
+      showColliRays: false
+    }
+
     // Keep the mouse in sync with rendering
     this.render.mouse = this.mouse
 
@@ -77,6 +82,26 @@ class Game {
           break
         }
       }
+    })
+
+    // controls
+    restartButtonDOM.addEventListener('click', () => {
+      this.restart()
+    })
+
+    wireframesButtonDOM.addEventListener('click', () => {
+      wireframesButtonDOM.innerHTML = this.toggleRenderOption('wireframes')
+    })
+
+    targetButtonDOM.addEventListener('click', () => {
+      targetButtonDOM.innerHTML = this.toggleOption('showTarget', 'target')
+    })
+
+    colliRaysButtonDOM.addEventListener('click', () => {
+      colliRaysButtonDOM.innerHTML = this.toggleOption(
+        'showColliRays',
+        'Collision Rays'
+      )
     })
 
     Events.on(this.engine, 'collisionStart', (e) => {
@@ -163,6 +188,22 @@ class Game {
 
   getObstacles = () => {
     return [...this.hills.bodies, ...this.borders.bodies]
+  }
+
+  restart = () => {
+    this.GA.restart()
+  }
+
+  toggleOption = (option, text) => {
+    const newBool = !this.options[option]
+    this.options[option] = newBool
+    return `${text.toUpperCase()}: ${newBool ? 'ON' : 'OFF'}`
+  }
+
+  toggleRenderOption = (option) => {
+    const newBool = !this.render.options[option]
+    this.render.options[option] = newBool
+    return `${option.toUpperCase()}: ${newBool ? 'ON' : 'OFF'}`
   }
 
   get hasFocus() {

@@ -206,8 +206,6 @@ class Rocket {
         x: FOCUS_PADDING,
         y: FOCUS_PADDING
       })
-
-      console.log(this)
     }
   }
 
@@ -340,7 +338,7 @@ class Rocket {
   }
 
   drawCollisionRays = () => {
-    if (!this.status.focused) return
+    if (!this.status.focused && !this.game.options.showColliRays) return
 
     if (this.points) {
       this.points.forEach((point) => {
@@ -402,7 +400,11 @@ class Rocket {
   }
 
   drawClosestTarget = () => {
-    if (!this.status.focused || !this.status.closest.body) return
+    if (
+      (!this.status.focused && !this.game.options.showTarget) ||
+      !this.status.closest.body
+    )
+      return
 
     Helper.drawLine(
       this.game.render,
@@ -414,7 +416,7 @@ class Rocket {
         this.bodies.rocket.position,
         this.game.render
       ),
-      '#543143'
+      '#765365'
     )
   }
 

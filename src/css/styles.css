@@ -23,14 +23,15 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 #wrapper {
   position: relative;
-  height: 100vh;
-  width: 80vw;
+  height: 100%;
+  width: 80%;
   border: 5px solid rgba(255, 255, 255, 0.082);
-  cursor: pointer;
 }
 
 #title {
@@ -44,16 +45,53 @@ body {
 }
 
 #info-and-controls {
-  width: 20vw;
-  height: 100vh;
+  background: black;
+  z-index: 1000;
+  width: 20%;
+  height: 100%;
   overflow: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 0.3em;
   font-size: 2em;
   border: 5px solid rgba(255, 255, 255, 0.082);
   border-left: none;
   color: #d8ffd4af;
+}
+
+#info-and-controls div {
+  flex: 1;
+  width: 100%;
+}
+
+#info {
+  padding: 0.3em;
+  border-bottom: 5px solid rgba(255, 255, 255, 0.082);
+}
+
+#controls {
+  padding: 0.3em;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.control {
+  cursor: pointer;
+  padding: 0.5em;
+  font-size: 1em;
+  color: inherit;
+  background: none;
+  border: 5px solid rgba(255, 255, 255, 0.082);
+}
+
+.control:active {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.control:focus {
+  outline: none;
 }
