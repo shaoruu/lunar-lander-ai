@@ -69,15 +69,10 @@ class GeneticAlgorithm {
   update = (delta) => {
     if (this.actives === 0) {
       this.game.removeFocus()
-      this.game.pause()
-
-      setTimeout(() => {
-        this.updateData()
-        this.evolveBrains()
-        this.resetRockets()
-        this.iterProxy.iteration = ++this.iteration
-        this.game.resume()
-      }, 2000)
+      this.updateData()
+      this.evolveBrains()
+      this.resetRockets()
+      this.iterProxy.iteration = ++this.iteration
     }
 
     this.rockets.forEach((rocket) => rocket.update(delta))
@@ -146,7 +141,7 @@ class GeneticAlgorithm {
     for (let i = winners.length; i < this.maxUnits; i++) {
       let offspring
 
-      if (i < this.topUnits + TOP_WINNERS_COUNT) {
+      if (i < winners.length + TOP_WINNERS_COUNT) {
         // if within topUnits + count, crossover between parents
         const parentA = winners[0].toJSON()
         const parentB = winners[1].toJSON()
