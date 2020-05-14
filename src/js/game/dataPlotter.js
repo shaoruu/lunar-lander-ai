@@ -23,7 +23,7 @@ class DataPlotter {
     this.chart.data.labels.push(label)
     this.chart.data.datasets.forEach((dataset) => {
       dataset.data.push(data)
-      dataset.backgroundColor.push('#d8ffd4af')
+      dataset.backgroundColor.push('#d8ffd499')
     })
     this.chart.update()
   }

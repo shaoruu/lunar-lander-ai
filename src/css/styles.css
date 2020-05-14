@@ -3,6 +3,16 @@
   src: url('../../assets/retganon.ttf');
 }
 
+@font-face {
+  font-family: 'Maxwell';
+  src: url('../../assets/MAXWELL\ REGULAR.ttf');
+}
+
+@font-face {
+  font-family: 'Sabo';
+  src: url('../../assets/Sabo-Regular.otf');
+}
+
 * {
   margin: 0;
   padding: 0;

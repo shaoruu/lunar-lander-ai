@@ -1,6 +1,8 @@
 const wrapperDOM = document.getElementById('wrapper')
 const generationDOM = document.getElementById('generation')
 const fittestDOM = document.getElementById('fittest')
+const landedDOM = document.getElementById('landed')
+const successRateDOM = document.getElementById('success-rate')
 
 /* -------------------------------------------------------------------------- */
 /*                                   SETTERS                                  */

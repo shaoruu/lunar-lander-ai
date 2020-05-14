@@ -69,10 +69,15 @@ class GeneticAlgorithm {
   update = (delta) => {
     if (this.actives === 0) {
       this.game.removeFocus()
-      this.updateData()
-      this.evolveBrains()
-      this.resetRockets()
-      this.iterProxy.iteration = ++this.iteration
+      this.game.pause()
+
+      setTimeout(() => {
+        this.updateData()
+        this.evolveBrains()
+        this.resetRockets()
+        this.iterProxy.iteration = ++this.iteration
+        this.game.resume()
+      }, 2000)
     }
 
     this.rockets.forEach((rocket) => rocket.update(delta))
@@ -84,6 +89,12 @@ class GeneticAlgorithm {
     const avgFitness =
       this.rockets.reduce((acc, curr) => acc + curr.fitness, 0) /
       this.rockets.length
+
+    const landed = this.rockets.filter((r) => r.state === LANDED_STATE).length
+    landedDOM.innerHTML = `Landed: ${landed}`
+
+    const successRate = landed / MAX_UNIT
+    successRateDOM.innerHTML = `Success Rate: ${successRate.toFixed(TO_FIXED)}`
 
     this.game.dataPlotter.addData(`${this.iteration}`, avgFitness)
   }
@@ -218,6 +229,9 @@ class GeneticAlgorithm {
   restart = () => {
     this.fitProxy.fittest = -1
     this.iterProxy.iteration = 1
+
+    landedDOM.innerHTML = 'Landed: 0'
+    successRateDOM.innerHTML = 'Success Rate: 0.000'
 
     this.initData()
     this.resetRockets()
