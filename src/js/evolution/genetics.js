@@ -131,8 +131,8 @@ class GeneticAlgorithm {
         const parentB = winners[1].toJSON()
         offspring = this.crossOver(parentA, parentB)
       } else if (i < this.maxUnits - CROSSOVER_WINNER_COUNT) {
-        const parentA = this.getRandomProbBrain(winners).toJSON()
-        const parentB = this.getRandomProbBrain(winners).toJSON()
+        const parentA = this.getRandomBrain(winners).toJSON()
+        const parentB = this.getRandomBrain(winners).toJSON()
         offspring = this.crossOver(parentA, parentB)
       } else {
         offspring = this.getRandomProbBrain(winners).toJSON()

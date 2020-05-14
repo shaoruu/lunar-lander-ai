@@ -503,8 +503,8 @@ class Rocket {
         collisionStatus.distance = distance
 
         inputs.push(
-          distance *
-            (Helper.isBorder(body) ? INPUT_BORDER_FACTOR : INPUT_HILLS_FACTOR)
+          distance
+          // *            (Helper.isBorder(body) ? INPUT_BORDER_FACTOR : INPUT_HILLS_FACTOR)
         )
       } else {
         // TODO: figure out what to put here
@@ -522,11 +522,11 @@ class Rocket {
     this.status.closest.distance = distanceToClosest
     inputs.push(distanceToClosest)
 
-    inputs.push(rocket.speed * INPUT_SPEED_FACTOR)
-    inputs.push(
-      Helper.toDegrees(Helper.normalizeAngle(rocket.angle)) *
-        INPUT_DEGREES_FACTOR
-    )
+    // inputs.push(rocket.speed * INPUT_SPEED_FACTOR)
+    // inputs.push(
+    //   Helper.toDegrees(Helper.normalizeAngle(rocket.angle)) *
+    //     INPUT_DEGREES_FACTOR
+    // )
 
     return inputs
   }

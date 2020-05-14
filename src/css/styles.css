@@ -95,7 +95,7 @@ body {
   outline: none;
 }
 
-#btn-pause:disabled {
+.control:disabled {
   cursor: not-allowed;
   color: rgba(128, 128, 128, 0.212);
   border-color: rgba(255, 255, 255, 0.05);

@@ -110,6 +110,8 @@ class Game {
     })
 
     this.speedProxy = Helper.listen(this.runner, 'speedFactor', (value) => {
+      if (value === 1) slowDownButtonDOM.disabled = true
+      else slowDownButtonDOM.disabled = false
       if (value > 1) pausePlayButtonDOM.disabled = true
       else pausePlayButtonDOM.disabled = false
       speedTextDOM.innerHTML = `${value}X`
