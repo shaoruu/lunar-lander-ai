@@ -146,8 +146,7 @@ class Rocket {
       !this.status.fresh &&
       Helper.dist(rocket.positionPrev, rocket.position) <=
         ROCKET_LANDING_EPSILON &&
-      rocket.speed <= SPEED_EPSILON &&
-      rocket.angularSpeed <= 0
+      rocket.speed <= SPEED_EPSILON
     ) {
       this.land()
     }

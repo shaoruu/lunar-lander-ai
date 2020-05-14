@@ -123,26 +123,29 @@ class GeneticAlgorithm {
       this.mutateRate = MUTATE_RATE
     }
 
-    for (let i = this.topUnits; i < this.maxUnits; i++) {
+    for (let i = winners.length; i < this.maxUnits; i++) {
       let offspring
 
       if (i < this.topUnits + TOP_WINNERS_COUNT) {
+        // if within topUnits + count, crossover between parents
         const parentA = winners[0].toJSON()
         const parentB = winners[1].toJSON()
         offspring = this.crossOver(parentA, parentB)
       } else if (i < this.maxUnits - CROSSOVER_WINNER_COUNT) {
+        // if within maxUnits - count, crossover between two random winners
         const parentA = this.getRandomBrain(winners).toJSON()
         const parentB = this.getRandomBrain(winners).toJSON()
         offspring = this.crossOver(parentA, parentB)
       } else {
+        // clone from a random winner
         offspring = this.getRandomProbBrain(winners).toJSON()
       }
 
       offspring = this.mutation(offspring)
 
       const newBrain = synaptic.Network.fromJSON(offspring)
-      this.rockets[i].registerBrain(newBrain)
 
+      this.brains[i].gameObject.registerBrain(newBrain)
       this.brains[i] = newBrain
     }
 
@@ -155,8 +158,15 @@ class GeneticAlgorithm {
       (a, b) => b.gameObject.fitness - a.gameObject.fitness
     )
 
+    let count = 0
+    for (let i = 0; i < sortedBrains.length; i++) {
+      const brain = sortedBrains[i]
+      if (brain.gameObject.state === LANDED_STATE) count++
+      else break
+    }
+
     // only return the top units
-    return sortedBrains.slice(0, this.topUnits)
+    return sortedBrains.slice(0, count > this.topUnits ? count : this.topUnits)
   }
 
   crossOver = (parentA, parentB) => {
