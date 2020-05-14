@@ -67,6 +67,8 @@ class Game {
       offset: CANVAS_HEIGHT * STARS_OFFSET_FACTOR
     })
 
+    this.dataPlotter = new DataPlotter()
+
     this.paused = false
     this.lastTime = performance.now()
 

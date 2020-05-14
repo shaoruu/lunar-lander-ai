@@ -68,15 +68,24 @@ class GeneticAlgorithm {
   /* -------------------------------------------------------------------------- */
   update = (delta) => {
     if (this.actives === 0) {
-      this.iterProxy.iteration = ++this.iteration
       this.game.removeFocus()
+      this.updateData()
       this.evolveBrains()
       this.resetRockets()
+      this.iterProxy.iteration = ++this.iteration
     }
 
     this.rockets.forEach((rocket) => rocket.update(delta))
 
     this.updateBestRocket()
+  }
+
+  updateData = () => {
+    const avgFitness =
+      this.rockets.reduce((acc, curr) => acc + curr.fitness, 0) /
+      this.rockets.length
+
+    this.game.dataPlotter.addData(`${this.iteration}`, avgFitness)
   }
 
   updateBestRocket = () => {

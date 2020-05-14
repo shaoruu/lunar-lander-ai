@@ -17,6 +17,11 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/synaptic/1.1.4/synaptic.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
+      integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI="
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <div id="content">
@@ -27,6 +32,9 @@
         <div id="info">
           <div id="generation">Generation: 1</div>
           <div id="fittest">Fittest: -1.000</div>
+        </div>
+        <div id="chart">
+          <canvas id="my-chart"></canvas>
         </div>
         <div id="controls">
           <button class="control" id="btn-restart">RESTART</button>
@@ -54,6 +62,7 @@
     <script src="src/js/game/hills.js"></script>
     <script src="src/js/game/moon.js"></script>
     <script src="src/js/game/stars.js"></script>
+    <script src="src/js/game/dataPlotter.js"></script>
     <script src="src/js/game/rocket.js"></script>
     <script src="src/js/evolution/genetics.js"></script>
     <script src="src/js/game/game.js"></script>
