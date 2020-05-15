@@ -13,6 +13,7 @@ class GeneticAlgorithm {
 
     this.initData()
     this.initListeners()
+    this.initDOM()
   }
 
   /* -------------------------------------------------------------------------- */
@@ -32,6 +33,11 @@ class GeneticAlgorithm {
     this.fitProxy = Helper.listen(this, 'fittest', (value) => {
       DOMChanger.setFittestDOM(value)
     })
+  }
+
+  initDOM = () => {
+    landedDOM.innerHTML = `Landed: 0/${MAX_UNIT}`
+    successRateDOM.innerHTML = 'Success Rate: 0.000%'
   }
 
   /* -------------------------------------------------------------------------- */
@@ -86,10 +92,12 @@ class GeneticAlgorithm {
       this.rockets.length
 
     const landed = this.rockets.filter((r) => r.state === LANDED_STATE).length
-    landedDOM.innerHTML = `Landed: ${landed}`
+    landedDOM.innerHTML = `Landed: ${landed}/${MAX_UNIT}`
 
     const successRate = landed / MAX_UNIT
-    successRateDOM.innerHTML = `Success Rate: ${successRate.toFixed(TO_FIXED)}`
+    successRateDOM.innerHTML = `Success Rate: ${(successRate * 100).toFixed(
+      TO_FIXED
+    )}%`
 
     this.game.dataPlotter.addData(`${this.iteration}`, avgFitness)
   }
@@ -225,8 +233,8 @@ class GeneticAlgorithm {
     this.fitProxy.fittest = -1
     this.iterProxy.iteration = 1
 
-    landedDOM.innerHTML = 'Landed: 0'
-    successRateDOM.innerHTML = 'Success Rate: 0.000'
+    landedDOM.innerHTML = 'Landed: 0/30'
+    successRateDOM.innerHTML = 'Success Rate: 0.000%'
 
     this.initData()
     this.resetRockets()

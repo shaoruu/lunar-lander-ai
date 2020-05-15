@@ -13,11 +13,22 @@
   src: url('../../assets/Sabo-Regular.otf');
 }
 
+@font-face {
+  font-family: 'Pixel Emulator';
+  src: url('../../assets/PixelEmulator-xq08.ttf');
+}
+
+@font-face {
+  font-family: 'Joystix';
+  src: url('../../assets/joystix\ monospace.ttf');
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Retganon';
+  font-family: 'Joystix';
+  font-size: 0.88em;
 }
 
 body {
@@ -116,7 +127,6 @@ body {
 }
 
 #info,
-#chart,
 #controls {
   flex: 1;
 }

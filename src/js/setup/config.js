@@ -87,7 +87,7 @@ const ROCKET_FIRE_COLOR = '#803010'
 /*                              GENETIC ALGORITHM                             */
 /* -------------------------------------------------------------------------- */
 const MAX_UNIT = 30
-const TOP_UNIT = 12
+const TOP_UNIT = 15
 const HIDDEN_NEURONS = 16
 const FUEL_WEIGHT = 0.05
 const SPEED_WEIGHT = -4
@@ -105,4 +105,4 @@ const INPUT_SPEED_FACTOR = 100
 const INPUT_DEGREES_FACTOR = 1
 const ROCKET_LANDING_EPSILON = 0
 const TOP_WINNERS_COUNT = 5
-const CROSSOVER_WINNER_COUNT = 3
+const CROSSOVER_WINNER_COUNT = 5
