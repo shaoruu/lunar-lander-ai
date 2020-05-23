@@ -1,3 +1,4 @@
+/* Main control of the lunar lander */
 class Game {
   constructor() {
     this.engine = Engine.create()

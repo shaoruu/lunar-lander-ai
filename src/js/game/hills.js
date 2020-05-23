@@ -1,3 +1,4 @@
+/* Generate pseudorandom hills with Perlin Noise */
 class Hills {
   constructor({ engine, amplitude, offset }) {
     this.engine = engine

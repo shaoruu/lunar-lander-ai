@@ -1,3 +1,4 @@
+/* Rocket class, contains logic that controls the rocket */
 class Rocket {
   constructor({ game, x, y, filter, rotation, velocity }) {
     this.game = game

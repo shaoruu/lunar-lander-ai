@@ -1,3 +1,4 @@
+/* Randomly draw dots on the canvas for visual effects */
 class Stars {
   constructor({ count, offset, render }) {
     this.count = count

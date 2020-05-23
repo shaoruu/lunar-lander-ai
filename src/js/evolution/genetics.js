@@ -73,6 +73,7 @@ class GeneticAlgorithm {
   /*                              LOOPS AND UPDATES                             */
   /* -------------------------------------------------------------------------- */
   update = (delta) => {
+    // This means all rockets have either crashed or landed
     if (this.actives === 0) {
       this.game.removeFocus()
       this.updateData()
@@ -139,6 +140,7 @@ class GeneticAlgorithm {
 
     this.fitProxy.fittest = winners[0].gameObject.fitness
 
+    // If the population is too disappointing, create a new one instead
     if (this.mutateRate === 1 && winners[0].gameObject.fitness < 0) {
       console.log('Brains too weak to evolve.')
       this.createBrains()
@@ -146,6 +148,7 @@ class GeneticAlgorithm {
       this.mutateRate = MUTATE_RATE
     }
 
+    // Keep the top units, and evolve the rest of the population
     for (let i = winners.length; i < this.maxUnits; i++) {
       let offspring
 
@@ -160,10 +163,11 @@ class GeneticAlgorithm {
         const parentB = this.getRandomBrain(winners).toJSON()
         offspring = this.crossOver(parentA, parentB)
       } else {
-        // clone from a random winner
+        // clone from a random winner based upon fitness
         offspring = this.getRandomProbBrain(winners).toJSON()
       }
 
+      // mutate offspring for randomness of evolution
       offspring = this.mutation(offspring)
 
       const newBrain = synaptic.Network.fromJSON(offspring)
@@ -181,6 +185,7 @@ class GeneticAlgorithm {
       (a, b) => b.gameObject.fitness - a.gameObject.fitness
     )
 
+    // preserve the landed ones
     let count = 0
     for (let i = 0; i < sortedBrains.length; i++) {
       const brain = sortedBrains[i]
@@ -188,18 +193,16 @@ class GeneticAlgorithm {
       else break
     }
 
-    // only return the top units
+    // only return the top units or the ones landed
     return sortedBrains.slice(0, count > this.topUnits ? count : this.topUnits)
   }
 
   crossOver = (parentA, parentB) => {
     const cutPoint = Helper.randomInt(0, parentA.neurons.length - 1)
     for (let i = cutPoint; i < parentA.neurons.length; i++) {
-      // if (Helper.randomInt(0, 1) === 1) {
       const biasFromParentA = parentA.neurons[i].bias
       parentA.neurons[i].bias = parentB.neurons[i].bias
       parentB.neurons[i].bias = biasFromParentA
-      // }
     }
 
     return Helper.randomInt(0, 1) === 1 ? parentA : parentB
@@ -246,6 +249,7 @@ class GeneticAlgorithm {
   }
 
   getRandomProbBrain = (array) => {
+    // https://natureofcode.com/book/chapter-9-the-evolution-of-code/#95-the-genetic-algorithm-part-ii-selection
     const totalFitness = array.reduce((acc, cur) => {
       return acc + cur.gameObject.fitness
     })

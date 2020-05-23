@@ -1,4 +1,4 @@
-/* ROCKET */
+/* Create a rocket body with primitive shapes */
 const getRocketBody = (x, y, w, h, filter) => {
   const Y_OFFSET = h * 0
 

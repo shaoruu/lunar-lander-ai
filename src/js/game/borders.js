@@ -1,3 +1,4 @@
+/* Creates a thick border around the canvas */
 class Borders {
   constructor(engine) {
     this.engine = engine

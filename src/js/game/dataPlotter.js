@@ -1,3 +1,4 @@
+/* Plot average fitness with chart.js */
 class DataPlotter {
   constructor() {
     this.ctx = document.getElementById('my-chart').getContext('2d')
