@@ -47,7 +47,7 @@ This is essentially the score of the rocket, used as a measure of how successful
 
 I mass spawn 30 rockets each iteration. In a certain time period, the rockets either crash, land or stay in the air.
 
-After each iteration, I calculate the fitness of each and every rocket, and rank them from high to low. I keep the top rockets, and [reproduce](https://natureofcode.com/book/chapter-9-the-evolution-of-code/#96-the-genetic-algorithm-part-iii-reproduction) new rockets out of them.
+After each iteration, I calculate the fitness of each and every rocket, and rank them from high to low. I keep the top rockets, and [reproduce](https://natureofcode.com/book/chapter-9-the-evolution-of-code/#96-the-genetic-algorithm-part-iii-reproduction) new rockets by crossing over and mutating their weights and biases out of the top units.
 
 ## Results
 
