@@ -64,3 +64,4 @@ After a few iterations, rockets start to land by themselves, and the average fit
 - [Coding Train's Evolution of Code](https://natureofcode.com/book/chapter-9-the-evolution-of-code/)
 - [My friend Baltazar's project](https://github.com/balta-z-r/lunar-lander)
 - [Artistic inspiration from online lunar lander](http://moonlander.seb.ly/)
+- [Synaptic NN Library](https://github.com/cazala/synaptic)
