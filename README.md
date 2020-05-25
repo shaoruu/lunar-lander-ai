@@ -56,7 +56,6 @@ After a few iterations, rockets start to land by themselves, and the average fit
 <p align="center">
 <img src="https://i.imgur.com/fZeiCZW.gif" width="1000"/>
 </p>
-![](https://i.imgur.com/fZeiCZW.gif)
 
 ## Resources
 
